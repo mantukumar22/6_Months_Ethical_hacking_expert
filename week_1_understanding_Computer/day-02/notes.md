@@ -12,9 +12,9 @@ This is a trade-off: DRAM is extremely fast and cheap per bit, but it can't hold
 - What would a cryptominer look like in Task Manager?
 Cryptominers use your hardware to compute hashes for cryptocurrency, so the signs are sustained, unexplained resource use:
 
- - Constant high CPU or GPU usage (often 80-100%) while you're idle, with nothing demanding open. Check the Performance tab, especially the GPU graphs, and look at the GPU "Compute" or "CUDA" engine rather than just "3D."
- - A single process using heavy resources with an unfamiliar or disguised name, such as one that imitates a system process (svch0st.exe, csrss in the wrong folder, or random letters).
- - High power use and heat: fans spinning loudly, the laptop hot, battery draining fast, even when idle.
+  Constant high CPU or GPU usage (often 80-100%) while you're idle, with nothing demanding open. Check the Performance tab, especially the GPU graphs, and look at the GPU "Compute" or "CUDA" engine rather than just "3D."
+  A single process using heavy resources with an unfamiliar or disguised name, such as one that imitates a system process (svch0st.exe, csrss in the wrong folder, or random letters).
+  High power use and heat: fans spinning loudly, the laptop hot, battery draining fast, even when idle.
 Persistence: the process returns after you end it, or reappears after reboot (check the Startup tab).
- - Odd behavior: it may drop in usage when you open Task Manager, because some miners pause to hide.
+  Odd behavior: it may drop in usage when you open Task Manager, because some miners pause to hide.
 Network activity to a mining pool, which appears as steady low-bandwidth traffic.

@@ -18,7 +18,7 @@ Cryptominers use your hardware to compute hashes for cryptocurrency, so the sign
   
   High power use and heat: fans spinning loudly, the laptop hot, battery draining fast, even when idle.
   
-Persistence: the process returns after you end it, or reappears after reboot (check the Startup tab).
+  Persistence: the process returns after you end it, or reappears after reboot (check the Startup tab).
 
   Odd behavior: it may drop in usage when you open Task Manager, because some miners pause to hide.
-Network activity to a mining pool, which appears as steady low-bandwidth traffic.
+  Network activity to a mining pool, which appears as steady low-bandwidth traffic.

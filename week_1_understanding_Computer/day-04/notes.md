@@ -8,7 +8,9 @@
 | tasklist |All running processes with name, PID, session, and memory use. /svc adds the services inside each process, and /v adds the user and window title. |Attacker: finds security tools (antivirus, EDR) to evade, and processes to inject into or blend with. Defender: spots unknown or disguised processes (like a cryptominer or a fake svch0st.exe) and compares against a known-good baseline. |
 
 - Why least privilege matters:
+  
   Together these answer the attacker's basic questions: Who am I? Where am I? What is this system? What network am I on? What is running here? None of them are exploits, and they're normal admin tools. That makes them hard to block, so defenders detect them by context and pattern instead. A user running all five within seconds from a command prompt, especially launched by Word, a browser, or a script, is a classic suspicious sequence.
+
   Defender tips
   Enable command-line logging (Sysmon Event ID 1, or Windows Event 4688 with command line auditing) so you can see these commands run.
   Alert on bursts of discovery commands, not single uses.

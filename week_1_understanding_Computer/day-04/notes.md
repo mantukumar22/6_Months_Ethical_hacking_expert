@@ -13,6 +13,9 @@
 
   Defender tips
   Enable command-line logging (Sysmon Event ID 1, or Windows Event 4688 with command line auditing) so you can see these commands run.
+  
   Alert on bursts of discovery commands, not single uses.
+  
   Watch the parent process: cmd.exe spawned by winword.exe or powershell.exe is far more suspicious than one opened by a person at the desktop.
+  
   Compare to your baseline: admins run these commands often, so build exceptions for known admin accounts and hosts.

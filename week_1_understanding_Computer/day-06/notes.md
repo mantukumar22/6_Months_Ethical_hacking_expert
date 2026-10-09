@@ -12,13 +12,21 @@
 - Windows vs Linux path differences:
   
 |            |    Windows      	   |         Linux        |
-|Separator	 |    Backslash \	     |           Forward slash /
+
+|Separator	 |    Backslash \	     |           Forward slash / |
+
 |Root	       |  Drive letters (C:\, D:\), one tree per drive |	Single root /, with drives mounted inside it (/mnt, /media) |
+
 |Case sensitivity	| Not case-sensitive (File.txt = file.txt)	| Case-sensitive (File.txt ≠ file.txt) |
+
 |User folders |	C:\Users\<name>	    |/home/<name> |
+
 |System files	| C:\Windows, C:\Program Files	| /etc, /bin, /usr, /var |
+
 |Hidden files	| A file attribute (hidden flag)	| Name starts with a dot (.bashrc) |
+
 |Executables	| Defined by extension (.exe, .bat, .ps1)	| Defined by the execute permission, not the extension |
+
 |Special characters	| Cannot use `< > : " / \ `|`	? *` in names |
 
 - Where would malware hide on a filesystem, and why?

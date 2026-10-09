@@ -10,6 +10,7 @@
   Security angle: relative paths cause problems when software trusts them. If a program runs tool.exe without a full path, it may launch whichever copy it finds first, which attackers abuse in DLL hijacking and search-order hijacking. Relative paths with ../ are also used in path traversal attacks to escape a folder.
   
 - Windows vs Linux path differences:
+  
 |            |    Windows      	   |         Linux        |
 |Separator	 |    Backslash \	     |           Forward slash /
 |Root	       |  Drive letters (C:\, D:\), one tree per drive |	Single root /, with drives mounted inside it (/mnt, /media) |

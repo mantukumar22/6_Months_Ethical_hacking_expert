@@ -25,13 +25,13 @@ One real-world example per layer:
 
 | Layer | Example |
 |---|---|
-| 7 Application | |
-| 6 Presentation | |
-| 5 Session | |
-| 4 Transport | |
-| 3 Network | |
-| 2 Data Link | |
-| 1 Physical | |
+| 7 Application | User create data here & Chrome useing Application layer protocol https to send the data to presentation layer |
+| 6 Presentation | After data created data format, compressd, encrypt, dcrept here  |
+| 5 Session | this manage Session like create , maintain & terminate for aunthentication & authorization|
+| 4 Transport | Here decides by which protocol data send to network layer( TCP or UDP ) |
+| 3 Network | Ip addressing , routing, best path selection & packet forwarding happens here |
+| 2 Data Link | all local network work happens here like MAC address handling, LNC, error detection|
+| 1 Physical | Managing the cables here and connectors|
 
 ## Key takeaways
 -

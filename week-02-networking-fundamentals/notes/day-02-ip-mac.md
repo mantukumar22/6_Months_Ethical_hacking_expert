@@ -10,6 +10,8 @@ Lab: [lab-02-ipconfig](../labs/lab-02-ipconfig.md). Run `ipconfig /all`.
 ## Notes (10 min)
 ## Day 2 Glossary: IP and MAC Addresses
 
+### IP Address: 
+A unique numerical label (such as an IPv4 or IPv6 address) assigned to every device connected to a network, acting like a digital mailing address.
 ### IPv4
 A 32-bit logical address written as four decimal numbers (0–255) separated by dots, e.g. `192.168.1.10`. It allows about 4.3 billion addresses, which is not enough for every device, so IPv4 addresses are shared and reused through NAT. Operates at **Layer 3 (Network)**.
 

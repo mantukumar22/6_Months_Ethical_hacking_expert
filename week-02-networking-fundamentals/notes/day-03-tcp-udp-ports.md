@@ -4,8 +4,6 @@
 ## Learn (20 min)
 TCP three-way handshake, UDP, ports, sockets.
 
-## Day 3 Glossary: TCP, UDP and Ports
-
 ### TCP (Transmission Control Protocol)
 A **connection-oriented, reliable** Layer 4 protocol. It sets up a connection first, numbers the data, confirms delivery, resends anything lost, and delivers it in order. That makes it slower but dependable. Used for web pages, file transfers, email and remote login.
 

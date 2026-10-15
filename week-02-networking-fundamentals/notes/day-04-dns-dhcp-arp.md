@@ -6,7 +6,7 @@ DNS: DNS Domain Name System (Server) is used to translate a fully qualifed Domai
 
 DHCP: Dynamic Host Configuration Protocol server is used to assign automatic ip address into client Computer systems.
 
-ARP: (Address Resolution Protocol) A protocol that finds the **MAC address** that belongs to a known **IPv4 address**
+ARP: (Address Resolution Protocol) A protocol that finds the **MAC address** that belongs to a known **IPv4 address** on the local network. It connects Layer 3 (IP) to Layer 2.
 
 WINS: Window Internet Name Service is used to resolve NetBIOS name into IP address.
 

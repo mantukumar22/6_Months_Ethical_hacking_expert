@@ -1,38 +1,59 @@
 # Lab 04: DNS, DHCP and ARP
 Commands: `nslookup example.com`, `ipconfig /all`, `arp -a`
-
 ## Lab 04: DNS, DHCP and ARP
 
-**Commands:** `nslookup example.com`, `ipconfig /all`, `arp -a`
+**Commands (Windows CMD, own device only):**
+```
+nslookup example.com
+ipconfig /all
+arp -a
+```
 
-> Run on my own device only. Redact MAC addresses and any public IP before committing.
+### 1. DNS server used
+Run `nslookup example.com`. The first two lines show which DNS server answered:
+```
+Server:  router.local
+Address: 192.168.1.1
+```
+Record the **Address**. It should match "DNS Servers" in `ipconfig /all`.
+- Private address (`192.168.x.x`): your router is the resolver and forwards queries to your ISP.
+- Public address (`1.1.1.1`, `8.8.8.8`): you're using a public resolver.
 
-### Results
+### 2. IP(s) returned for example.com
+Read below `Non-authoritative answer:` in the same output. "Non-authoritative" means the answer came from a cache rather than the domain's own server. Record all addresses, including IPv6 ones (long, with colons).
 
-| Question | Where to find it | My result |
-|---|---|---|
-| DNS server used | `nslookup example.com`, the `Server` / `Address` lines at the top | `<192.168.x.x or 1.1.1.1>` |
-| IP(s) returned for example.com | `nslookup`, below `Non-authoritative answer:` | `<IPv4 / IPv6 addresses>` |
-| DHCP server | `ipconfig /all`, the `DHCP Server` line on the active adapter | `<192.168.x.x>` |
-| Lease obtained / expires | `ipconfig /all`, the `Lease Obtained` and `Lease Expires` lines | `<date/time>` / `<date/time>` |
-| Gateway's ARP entry | `arp -a`, find the default gateway's IP under the correct `Interface:` | `192.168.x.x -> XX-XX-XX-XX-XX-XX` (dynamic) |
+### 3. DHCP server / lease info
+In `ipconfig /all`, find the **active adapter** (the Wi-Fi or Ethernet one with an IPv4 address):
 
-### How to read the output
+| Field | Meaning |
+|---|---|
+| DHCP Enabled | `Yes` means the address is assigned automatically |
+| DHCP Server | Who gave you the address, usually your router |
+| Lease Obtained | When you got the address |
+| Lease Expires | When it must be renewed |
 
-- **Non-authoritative answer:** the reply came from a resolver's cache, not directly from the domain's own name server.
-- **DHCP Enabled: Yes** means the router assigns the IP address automatically. The **lease** is how long I may keep it before renewing.
-- **`arp -a` shows one table per interface.** Use the one whose `Interface:` IP matches my adapter's IPv4 address.
+### 4. Gateway's entry in `arp -a`
+1. Find "Default Gateway" in `ipconfig /all` (e.g. `192.168.1.1`).
+2. In `arp -a`, find the section headed `Interface: <your IP>`.
+3. Find the gateway's IP in that list and note the MAC next to it, **redacted** (`AA-BB-CC-XX-XX-XX`).
 
-### Dynamic vs static ARP entry
+### 5. Dynamic vs static ARP entry
 
 | | Dynamic | Static |
 |---|---|---|
-| How created | Learned automatically via ARP request/reply | Added manually (`arp -s`) or built in by the system |
-| Lifetime | Temporary, removed after a timeout | Stays until deleted or reboot |
-| Typical examples | Gateway, other devices on the LAN | Broadcast `ff-ff-ff-ff-ff-ff`, multicast addresses |
-| Security | Can be overwritten by a fake ARP reply (ARP spoofing) | Resistant to spoofing, but must be maintained by hand |
+| How created | Learned automatically via ARP request/reply | Added manually (`arp -s`) or by the system |
+| Lifetime | Temporary, removed after a timeout | Fixed, does not expire |
+| Examples | Your router, other LAN devices | Broadcast `ff-ff-ff-ff-ff-ff`, multicast entries |
+| Security | Can be overwritten by a fake ARP reply (spoofing) | Resists spoofing, used for critical devices |
 
-### What I learned
-- DNS turns the name into an IP, using the resolver shown in `nslookup`.
-- DHCP gave my device its IP, gateway and DNS settings.
-- ARP maps IPs to MAC addresses, and I reach the internet through the **gateway's** MAC, not the website's.
+### My results
+
+| Item | Value (redacted) |
+|---|---|
+| DNS server used | `192.168.x.x` |
+| IP(s) returned for example.com | |
+| DHCP server | `192.168.x.x` |
+| Lease obtained / expires | |
+| Gateway IP → MAC (from `arp -a`) | `192.168.x.x` → `XX-XX-XX-XX-XX-XX` |
+
+> Redact public IPs, MAC addresses and hostnames before committing. Keep raw output in `raw-private/`.

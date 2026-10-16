@@ -4,6 +4,24 @@
 ## Learn (20 min)
 Latency, packet loss, DNS failures, routing. (15 min)
 
+### What is Network Troubleshooting?
+
+**Network troubleshooting** is the process of identifying, diagnosing and fixing problems that stop devices from communicating properly. Instead of guessing, you test step by step to narrow down *where* the fault is and *what* is causing it.
+
+**Typical symptoms:** no internet, slow connections, websites not loading, dropped video calls, a device that can't reach a printer or server.
+
+**The basic method:**
+1. **Identify the problem:** what exactly is failing, for whom, and since when?
+2. **Gather information:** run tools such as `ipconfig`, `ping`, `tracert` and `nslookup`.
+3. **Form a theory:** for example, "DNS is failing" or "the gateway is unreachable".
+4. **Test the theory:** run a targeted check to confirm or rule it out.
+5. **Fix it:** restart, reconfigure or replace the faulty part.
+6. **Verify and document:** confirm it works and note what you found.
+
+**Common approach: use the OSI model.** Work from the bottom up (physical connection, then IP configuration, then routing, then DNS, then the application), or top down, to isolate which layer is failing. This is why Day 1 matters.
+
+**Why it matters for security:** the same tools and thinking are used in VAPT and red-team work. Understanding how traffic normally flows is what lets you spot abnormal behavior, and tools like `ping`, `tracert` and Wireshark are also used for network reconnaissance and analysis. Use them only on your own devices and networks, or ones you're authorized to test.
+
 ### Core concepts
 
 | Concept | Meaning | Typical cause when bad |

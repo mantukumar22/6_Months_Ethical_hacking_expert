@@ -127,6 +127,15 @@ Why HTTP/TLS traffic looks unreadable: on HTTPS sites the content is encrypted (
 ### Reflection
 Why can `ping 1.1.1.1` succeed while `ping example.com` fails?
 
+**Short answer:** `ping 1.1.1.1` uses an IP address directly, so it needs no DNS. `ping example.com` first has to **resolve the name to an IP address** using DNS. If DNS is broken, the name lookup fails before any ping packet is sent, even though the network connection itself is fine.
+
+```
+ping 1.1.1.1         ->  IP address given  ->  ICMP packets sent  ->  works
+
+ping example.com     ->  DNS lookup needed ->  lookup FAILS        ->  no packets sent
+                          (name -> IP)
+```
+
 ## Practice (30 min)
 Lab: [lab-06](../labs/lab-06-ping-tracert-wireshark.md). `ping 1.1.1.1`, `tracert example.com`, `nslookup example.com`, optional Wireshark (35 min).
 

@@ -4,8 +4,6 @@
 ## Learn (20 min)
 Latency, packet loss, DNS failures, routing. (15 min)
 
-## Day 6: Network Troubleshooting and Packet Analysis
-
 ### Core concepts
 
 | Concept | Meaning | Typical cause when bad |

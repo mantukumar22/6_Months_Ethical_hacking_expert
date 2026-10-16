@@ -130,15 +130,6 @@ Why can `ping 1.1.1.1` succeed while `ping example.com` fails?
 ## Practice (30 min)
 Lab: [lab-06](../labs/lab-06-ping-tracert-wireshark.md). `ping 1.1.1.1`, `tracert example.com`, `nslookup example.com`, optional Wireshark (35 min).
 
-## Notes (10 min)
-What each command tells me, plus one limitation:
-
-| Command | Tells me | Limitation |
-|---|---|---|
-| ping | | |
-| tracert | | |
-| nslookup | | |
-
 ## Key takeaways
 -
 

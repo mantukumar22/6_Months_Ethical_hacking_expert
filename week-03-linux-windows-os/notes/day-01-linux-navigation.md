@@ -30,7 +30,7 @@ Lab: [lab-01-navigation](../labs/lab-01-navigation.md)
 ## Day 1 Glossary: Linux Basics and the Filesystem
 
 ### What is Linux?
-Strictly, **Linux is the kernel**: the core program that controls hardware (CPU, memory, disks, network) and lets programs run. A usable operating system adds a **shell** and **utilities** on top.
+Strictly, **Linux is the kernel**: (A kernel is the central core program of a computer's operating system) the core program that controls hardware (CPU, memory, disks, network) and lets programs run. A usable operating system adds a **shell** and **utilities** on top.
 
 | Part | Role | Example |
 |---|---|---|

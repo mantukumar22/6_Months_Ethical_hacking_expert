@@ -39,38 +39,38 @@ A company runs an old web server. A new bug for that version is published, and a
 
 | Item | Answer |
 |---|---|
-| Threat | |
-| Vulnerability | |
-| Exploit | |
-| Asset | |
-| Which CIA principle is at risk? | |
+| Threat | Criminal group |
+| Vulnerability | old version |
+| Exploit | public tool |
+| Asset | web server |
+| Which CIA principle is at risk? | Asseciblity |
 
 ### Classify each (Threat / Vulnerability / Exploit)
 | Item | Type |
 |---|---|
-| Employee who reuses the same weak password everywhere | |
-| A phishing email campaign | |
-| Missing security patch on a VPN appliance | |
-| A script that sends crafted input to bypass a login | |
-| A disgruntled employee with admin access | |
-| Default admin password left unchanged | |
+| Employee who reuses the same weak password everywhere | Vulnerablity |
+| A phishing email campaign | Exploit |
+| Missing security patch on a VPN appliance | Threat |
+| A script that sends crafted input to bypass a login | Exploit |
+| A disgruntled employee with admin access | vulnerablity|
+| Default admin password left unchanged | vulnerablity |
 
 ### Write your own
 One threat, one vulnerability and one exploit for a **home Wi-Fi router**:
-- Threat:
-- Vulnerability:
-- Exploit:
+- Threat: A unknown connetion 
+- Vulnerability: the week password
+- Exploit: trafic sniped
 
 ## Notes (10 min)
 In my own words, the difference between the three, in one sentence each:
-- Threat:
-- Vulnerability:
-- Exploit:
+- Threat: this refers to that thing that can harm & what he harm & how that thing harmed
+- Vulnerability: This refers to a thing having weakness that can cause to harm that thing. 
+- Exploit: This refers to a thing that used to harm & useing a vulnerblity.
 
 ## Self-check
-1. Can a vulnerability exist without a threat? Can a threat succeed without a vulnerability?
-2. Why can we fix vulnerabilities but not eliminate threats?
-3. What is a zero-day?
+1. Can a vulnerability exist without a threat? Can a threat succeed without a vulnerability? No
+2. Why can we fix vulnerabilities but not eliminate threats? Beacue we handle only those things that i owned & on that i take action to stop.
+3. What is a zero-day? 1st day of a vulnerblity that introduce in front of vender.
 
 ## Mistake I fixed / still confusing
 -

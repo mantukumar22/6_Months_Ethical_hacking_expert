@@ -1,5 +1,5 @@
 # Day 3: Risk and Attack Surface
-**Date:** ____ · **Time:** 60 min
+**Date:** 17 Nov · **Time:** 60 min
 **Video:** Risk and Attack Surface: <paste URL>
 
 ## Learn (20 min)

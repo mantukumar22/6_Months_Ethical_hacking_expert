@@ -84,13 +84,13 @@ An **attack vector** is the **path or method** an attacker uses to reach the sur
 
 | Component | Possible attack vector | One way to reduce it |
 |---|---|---|
-| | | |
-|---|---|---|
-| | | |
-|---|---|---|
-| | | |
-|---|---|---|
-| | | |
+| Login Page | Brute-force attacks and credential stuffing | Implement Multi-Factor Authentication (MFA) and account lockout/rate limiting. |
+| Public API | API abuse, injection attacks, and unauthorized access | Implement API authentication, authorization, and rate limiting. |
+| Admin panel | Unauthorized access through stolen credentials | Restrict access using MFA and IP allowlisting. |
+| Database | SQL injection and unauthorized data access | Use parameterized queries and strict database access controls. |
+| file upload | Uploading malicious files containing malware or web shells | Validate file types, scan uploads for malware, and store files securely. |
+| Third-party scripts | Malicious or compromised external JavaScript | Use Subresource Integrity (SRI) and regularly audit third-party dependencies. |
+| Staff Wi-Fi network | Unauthorized access and network sniffing | Use WPA3-Enterprise authentication and separate the staff network from critical systems. |
 
 ### 3. Your own PC (Week 2 and 3 link)
 List what your Kali or Windows machine exposes: run `ss -tulpn` or `netstat -ano | findstr LISTENING`.
@@ -98,14 +98,17 @@ List what your Kali or Windows machine exposes: run `ss -tulpn` or `netstat -ano
 - Any I can close or restrict?
 
 ## Notes (10 min)
-- Risk in one sentence:
-- Attack surface in one sentence:
-- Attack vector in one sentence:
+- Risk in one sentence: Risk tells what we loss and what that make impact if that certain thing is happend.
+- Attack surface in one sentence: A surface where an attacker has chance to attack and that possible to work.
+- Attack vector in one sentence: Starting point of an attack . 
 
 ## Self-check
 1. Why is risk not the same as vulnerability?
+   Because risk tells about the attack and vulnerbility is weakness of the system that we have.
 2. If likelihood is 5 and impact is 2, what is the score and level?
+   score = 10, Level = Medium
 3. Name three ways to reduce an attack surface.
+   Add MFA, Staff cybersecurity awearness, Rate limiting at login page
 
 ## Mistake I fixed / still confusing
 -

@@ -85,6 +85,12 @@ An **attack vector** is the **path or method** an attacker uses to reach the sur
 | Component | Possible attack vector | One way to reduce it |
 |---|---|---|
 | | | |
+|---|---|---|
+| | | |
+|---|---|---|
+| | | |
+|---|---|---|
+| | | |
 
 ### 3. Your own PC (Week 2 and 3 link)
 List what your Kali or Windows machine exposes: run `ss -tulpn` or `netstat -ano | findstr LISTENING`.

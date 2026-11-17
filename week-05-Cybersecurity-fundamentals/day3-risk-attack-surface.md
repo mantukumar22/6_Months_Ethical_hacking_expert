@@ -74,10 +74,10 @@ An **attack vector** is the **path or method** an attacker uses to reach the sur
 ### 1. Score the risks
 | Risk | Likelihood (1-5) | Impact (1-5) | Score | Level |
 |---|---|---|---|---|
-| Staff clicking a phishing link | | | | |
-| Server room flood | | | | |
-| Unpatched internet-facing web server | | | | |
-| Lost unencrypted laptop with customer data | | | | |
+| Staff clicking a phishing link | 4 | 5 | 20 | Critical |
+| Server room flood | 2 | 5 | 25 | Critical |
+| Unpatched internet-facing web server | 4 | 5 | 9 | Medium |
+| Lost unencrypted laptop with customer data | 3 | 5 | 20 | Critical |
 
 ### 2. Map the attack surface of a small web app
 (Login page, public API, admin panel, database, file upload, third-party scripts, a staff Wi-Fi network.)

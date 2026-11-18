@@ -1,5 +1,5 @@
 # Day 4: Types of Cyberattacks
-**Date:** ____ · **Time:** 60 min
+**Date:** 18 · **Time:** 60 min
 **Video:** Common Cyberattacks: <paste URL>
 
 Learn how each attack works at a **conceptual** level, what it harms, and how to defend against it. Practice attacks only in the Day 6 lab environments.

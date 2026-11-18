@@ -1,5 +1,5 @@
 # Day 5: Security Controls
-**Date:** ____ · **Time:** 60 min
+**Date:** 18 · **Time:** 60 min
 **Video:** Types of Security Controls: <paste URL>
 
 ## Learn (20 min)

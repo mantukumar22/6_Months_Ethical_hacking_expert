@@ -52,39 +52,41 @@ Notes:
 ### 1. Classify (preventive / detective / corrective)
 | Control | Type |
 |---|---|
-| Security camera recording a door | |
-| Password policy requiring 14 characters | |
-| SIEM alert for 50 failed logins | |
-| Restoring files from last night's backup | |
-| Patching a vulnerable server | |
-| Incident response plan | |
-| Antivirus quarantining a file | |
-| Disabling a compromised account | |
+| Security camera recording a door | Detective |
+| Password policy requiring 14 characters | Preventive |
+| SIEM alert for 50 failed logins | Detective |
+| Restoring files from last night's backup | Corrective |
+| Patching a vulnerable server | Corrective |
+| Incident response plan | Corrective |
+| Antivirus quarantining a file | Detective|
+| Disabling a compromised account | Corrective |
 
 ### 2. Layers for a small business
 Name one control for each layer:
 | Layer | Control |
 |---|---|
-| Perimeter (network) | |
-| Endpoint (devices) | |
-| Application | |
-| Data | |
-| People | |
-| Physical | |
+| Perimeter (network) | firewall |
+| Endpoint (devices) | Antivires |
+| Application | MFA & Traffic Logs |
+| Data | Backups |
+| People | phising awearness |
+| Physical | Cameras & server room security |
 
 ### 3. Check your own machine (read only)
 - Windows: Firewall and Defender status (see Week 3, Lab 06).
-- Kali: is a firewall (`ufw`) active? Do you have backups of your lab notes?
-- Is MFA on for my email, GitHub and main accounts?
+- Kali: is a firewall (`ufw`) active? Do you have backups of your lab notes? yes
+- Is MFA on for my email, GitHub and main accounts? yes
 
 ## Notes (10 min)
 - Difference between preventive and detective controls:
-- Why corrective controls matter even with strong prevention:
+  Preventive works like protect apps before attack & Detective is like detect attacks when thats happens.
+- Why corrective controls matter even with strong prevention: Because no prevention is perfect, corrective controls limit the damag
+  Because 
 
 ## Self-check
-1. Why is a firewall preventive but a SIEM alert detective?
-2. What does MFA protect against? What does it not protect against?
-3. What is defense in depth?
+1. Why is a firewall preventive but a SIEM alert detective? Because Firewall stop the attack & SIEM alert detect the attack.
+2. What does MFA protect against? What does it not protect against? MFA protects against account takeover from stolen or guessed passwords, since an attacker still needs a second factor to get in. & MFA doesn’t protect against attacks that bypass or hijack the login itself: session/cookie theft and adversary-in-the-middle phishing.
+3. What is defense in depth? Defense in depth is a security strategy that layers multiple, independent controls (people, process, and technology) so that if one fails or is bypassed, others still stand in the way of an attacker.
 
 ## Mistake I fixed / still confusing
 -

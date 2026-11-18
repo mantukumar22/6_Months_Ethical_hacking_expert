@@ -49,40 +49,40 @@ Learn how each attack works at a **conceptual** level, what it harms, and how to
 ### 1. Classify (attack and CIA principle)
 | Situation | Attack | CIA |
 |---|---|---|
-| An email says "Your account is locked, click here" | | |
-| A script tries 10,000 passwords on a login page | | |
-| A comment box saves text that runs in every visitor's browser | | |
-| A search box lets someone read the whole users table | | |
-| A shop site goes down under millions of fake requests | | |
+| An email says "Your account is locked, click here" | Phising | C I |
+| A script tries 10,000 passwords on a login page | Brute force | C I |
+| A comment box saves text that runs in every visitor's browser | XSS stored | C I |
+| A search box lets someone read the whole users table | SQL i | C I |
+| A shop site goes down under millions of fake requests | DOS | A |
 
 ### 2. Pick a defense
 For each attack, write one **preventive** and one **detective** control:
 | Attack | Preventive | Detective |
 |---|---|---|
-| Phishing | | |
-| Brute force | | |
-| SQL injection | | |
-| XSS | | |
-| DoS | | |
+| Phishing | Check any link and document before click & download | always in hurry texts & click here text |
+| Brute force | Strong password | failed logins in a certain time |
+| SQL injection | Input handling safly | any special charcter in input like sql syntax |
+| XSS | store any thing from user in a other space with input validation | malicius link |
+| DoS | unwanted traffic from a unwanted loction | rate limiting & load balencing & monitoring |
 
 ### 3. Spot a phishing email
 Find a sample phishing email (from your spam folder or an awareness site). List three red flags. **Do not click anything.**
-- 1.
-- 2.
-- 3.
+- 1. Read every line word carefully 
+- 2. Dont click any thing in email
+- 3. if its in spam dont open without knowing about it
 
 ## Notes (10 min)
 One sentence per attack, in my own words:
-- Phishing:
-- Brute force:
-- SQL injection:
-- XSS:
-- DoS:
+- Phishing: Make people full by using quickly activity.
+- Brute force: Guessing passowrd from list of passwords. 
+- SQL injection: giving database query and syntax in user input.
+- XSS: Submiting something malicous on website.
+- DoS: generating 1000 of fake users to crass the system server.
 
 ## Self-check
-1. What is the root cause of SQL injection and XSS? (Think untrusted input.)
-2. Which defense best stops SQL injection? Which stops brute force?
-3. How is DDoS different from DoS?
+1. What is the root cause of SQL injection and XSS? (Think untrusted input.) -> Website without input Validation & parameraised queries 
+2. Which defense best stops SQL injection? Which stops brute force? SQL -> parameterized queries, Brute force -> uqniue long password
+3. How is DDoS different from DoS? Dos -> originates from a single system , ip but DDOS having multiple.
 
 ## Mistake I fixed / still confusing
 -

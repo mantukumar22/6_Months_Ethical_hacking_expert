@@ -1,5 +1,5 @@
 # Day 6: Practical Lab
-**Date:** ____ · **Time:** 60 min
+**Date:** 19 · **Time:** 60 min
 **Video:** OWASP Juice Shop beginner lab: <paste URL>
 
 ## Goal

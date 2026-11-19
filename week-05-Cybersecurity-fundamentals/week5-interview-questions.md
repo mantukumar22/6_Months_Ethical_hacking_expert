@@ -3,13 +3,12 @@ Answer each in **your own words, out loud first**, then write it below. Aim for 
 
 ## 1. What is the CIA Triad?
 *Cover:* three principles, what each protects, one example each, and that they can conflict.
-
-**My answer:**
+** CIA stands for Confidentiality, Integrity, Availability. The CIA Triad is a fundamental information security model . Every security decision checked against it: which of the three am I protecting.
+Ex:- When i add MFA in a app its protecting User Data( Confidentiality ) and when attacker bypass login Confidentiality breaks. and when attacker edit the info in the user account integrity breaks & if the attacker doing DOS attack on app Availability breaks. ** 
 
 ## 2. What is the difference between a threat and a vulnerability?
 *Cover:* threat = danger or actor, vulnerability = weakness, which one you can fix, one example pair.
-
-**My answer:**
+****
 
 ## 3. What is an exploit?
 *Cover:* how it relates to a vulnerability, what it can deliver, why patching matters.

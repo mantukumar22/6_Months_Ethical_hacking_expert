@@ -158,14 +158,46 @@ print(caesar("Khoor", -3))     # Hello
 ```
 Then brute-force it: loop shifts 1 to 25 and read the results. This shows why small key spaces are insecure.
 
-## Notes (10 min)
-- In my own words: what is cryptography for?
-- Three real-world places I used cryptography today without noticing:
+# Cryptography Notes (10 min)
+
+## In my own words: what is cryptography for?
+
+Cryptography is the toolbox for protecting information when you can't trust the channel or the people who might see it. It lets me keep data **secret** (encryption), check that it hasn't been **changed** (hashing, MACs), and prove **who** it came from (digital signatures), even over an untrusted network like the internet.
+
+## Three real-world places I used cryptography today without noticing
+
+1. **HTTPS (the padlock in the browser):** TLS encrypts everything between my browser and the website, including logins and payments.
+2. **Messaging apps (e.g. WhatsApp, Signal):** end-to-end encryption means only my device and the recipient's device can read the messages.
+3. **Phone unlock and app logins:** the passcode or fingerprint is checked against a stored hash or protected by device encryption, and the password is never stored in plain text.
+
+*(Other common ones: Wi-Fi WPA2/WPA3, UPI or card payments, software updates verified by digital signatures.)*
+
+---
 
 ## Self-check
-1. What is the difference between plaintext and ciphertext?
-2. Why is the algorithm public but the key secret?
-3. Which of C, I and A does encryption mainly protect?
+
+### 1. What is the difference between plaintext and ciphertext?
+
+- **Plaintext** is the original, readable data (a message, a file, a card number).
+- **Ciphertext** is the scrambled output after encryption, which looks like random data and is unreadable without the key.
+- Encryption turns plaintext into ciphertext. Decryption (with the correct key) turns it back.
+
+### 2. Why is the algorithm public but the key secret?
+
+- **Kerckhoffs's principle:** a system should stay secure even if everything about it, except the key, is public.
+- Public algorithms (AES, RSA) are reviewed by thousands of experts, so weaknesses get found and fixed. Secret, home-made algorithms tend to hide flaws.
+- Secrets are hard to keep. It is far easier to protect and replace a short key than to keep a whole algorithm hidden or to replace it after a leak.
+- Many people can use the same algorithm safely, each with their own key.
+
+### 3. Which of C, I and A does encryption mainly protect?
+
+**C: Confidentiality.**
+
+- **C**onfidentiality: only authorized people can read the data. **Encryption mainly protects this.**
+- **I**ntegrity: the data hasn't been altered. This is protected mainly by hashes, MACs, and signatures.
+- **A**vailability: the data and systems are accessible when needed. This is protected by backups, redundancy, and DDoS protection.
+
+> Encryption alone does not guarantee integrity. Modern schemes (e.g. AES-GCM) combine encryption with an authentication tag to cover both.
 
 ## Mistake I fixed / still confusing
 -

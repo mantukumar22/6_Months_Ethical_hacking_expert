@@ -69,20 +69,46 @@ It encrypts with AES-256-GCM, decrypts, then **tampers with the ciphertext** to 
 
 | Observation | Explanation |
 |---|---|
-| Ciphertext differs on each run | |
-| Wrong key result | |
-| Tampered ciphertext result | |
+| Ciphertext differs on each run | Each encryption uses a fresh random IV/nonce (or salt), so the same plaintext and key give different ciphertext every time. This hides patterns, such as whether two messages are identical. The IV/nonce is not secret and is stored or sent alongside the ciphertext. |
+| Wrong key result | Decryption fails or produces garbage. With authenticated encryption (AES-GCM, Fernet) you get an error such as InvalidTag or InvalidToken, because the authentication check fails. With unauthenticated modes (AES-CBC, CTR) you may get random-looking bytes or a padding error rather than a clean failure. |
+| Tampered ciphertext result | Authenticated encryption rejects the data with an integrity error, and no plaintext is released. Unauthenticated modes may decrypt “successfully” to corrupted output, or let an attacker flip chosen bits (CTR) or corrupt blocks (CBC) without being noticed. This is why modern code should use an AEAD mode like AES-GCM, so encryption also covers integrity. |
 
-## Notes (10 min)
-- Symmetric encryption in one sentence:
-- Why GCM over ECB:
-- The main weakness of symmetric encryption:
+# Symmetric Encryption Notes (10 min)
+
+## Notes
+
+- **Symmetric encryption in one sentence:** The same secret key is used to both encrypt and decrypt the data, so both parties must already share that key.
+- **Why GCM over ECB:** GCM uses a unique nonce so identical plaintext blocks give different ciphertext, and it adds an authentication tag that detects tampering. ECB hides nothing about patterns and offers no integrity protection.
+- **The main weakness of symmetric encryption:** Key distribution. Both sides need the same secret key, and there is no safe way to share it over an untrusted channel without already having some other secure method.
+
+---
 
 ## Self-check
-1. What does "symmetric" mean here?
-2. What are AES's key sizes?
-3. Why is ECB mode unsafe?
-4. What is the key distribution problem?
+
+### 1. What does "symmetric" mean here?
+
+The same key is used on both sides: encryption and decryption are mirror operations with one shared secret. (Contrast with asymmetric encryption, which uses a public/private key pair.)
+
+### 2. What are AES's key sizes?
+
+**128, 192, and 256 bits.** The block size is always 128 bits. AES-256 gives the largest security margin; AES-128 is still considered secure today.
+
+### 3. Why is ECB mode unsafe?
+
+- ECB encrypts every block independently with the same key, with no IV or nonce.
+- **Identical plaintext blocks produce identical ciphertext blocks**, so patterns leak. The classic example is the "ECB penguin": an encrypted image still shows the outline of the original picture.
+- Attackers can also spot repeated data, and rearrange, delete, or replay blocks without detection, since there is no integrity check.
+- Use an authenticated mode such as **AES-GCM** (or ChaCha20-Poly1305) instead.
+
+### 4. What is the key distribution problem?
+
+Two parties need to share the same secret key before they can communicate securely, but sending the key over an insecure channel lets an attacker intercept it. It also scales badly: with *n* users who each need private communication with every other user, you need n(n-1)/2 separate keys.
+
+**Common solutions:**
+
+- Key exchange protocols such as Diffie-Hellman (ECDH), which let two parties agree on a shared key over an open channel.
+- Asymmetric encryption used to wrap (encrypt) a symmetric key, as in TLS (hybrid encryption).
+- A trusted key distribution center or pre-shared keys delivered out of band.
 
 ## Mistake I fixed / still confusing
 -

@@ -1,5 +1,5 @@
 # Day 2: Symmetric Encryption
-**Date:** ____ · **Time:** 60 min
+**Date:** 20 · **Time:** 60 min
 **Video:** AES encryption explained: <paste title/URL>
 
 ## Learn (20 min)

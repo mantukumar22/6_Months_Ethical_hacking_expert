@@ -1,5 +1,5 @@
 # Day 1: Introduction to Cryptography
-**Date:** ____ · **Time:** 60 min
+**Date:** 20 · **Time:** 60 min
 **Video:** Cryptography fundamentals: <paste title/URL>
 
 ## Learn (20 min)

@@ -135,11 +135,11 @@ Decoding `aGVsbG8=` returns `hello` with no key needed.
 ### Classify
 | Situation | Which tool? (encryption / hashing / encoding / signature) |
 |---|---|
-| Storing a user's password in a database | |
-| Sending a credit card number to a shop | |
-| Embedding an image inside an HTML email | |
-| Proving that a downloaded installer is genuine | |
-| Checking that a file wasn't corrupted | |
+| Storing a user's password in a database | Encryption |
+| Sending a credit card number to a shop | Encryption |
+| Embedding an image inside an HTML email | Encoding |
+| Proving that a downloaded installer is genuine | Signature |
+| Checking that a file wasn't corrupted | hashing |
 
 ### Try the Caesar cipher (5 lines of Python, for fun only)
 ```python

@@ -71,12 +71,66 @@ The **Caesar cipher** shifts each letter by a fixed number (key = 3: `A→D`). I
 
 ## Practice (30 min)
 ### Your first task: answer from your own understanding
-1. What is the difference between encryption and hashing?
-   - My answer:
-2. Why do we use cryptographic keys?
-   - My answer:
-3. Is Base64 encryption? Explain why.
-   - My answer:
+# Cryptography Basics: Q&A
+
+## 1. What is the difference between encryption and hashing?
+
+**My answer:**
+
+Encryption and hashing both transform data, but they serve different purposes.
+
+| | Encryption | Hashing |
+|---|---|---|
+| **Purpose** | Keep data confidential | Verify data integrity |
+| **Reversible?** | Yes, with the correct key (decryption) | No, it is a one-way function |
+| **Uses a key?** | Yes | No (except keyed variants such as HMAC) |
+| **Output size** | Varies with input size | Fixed length (e.g. 256 bits for SHA-256) |
+| **Examples** | AES, RSA, ChaCha20 | SHA-256, SHA-3, bcrypt, Argon2 |
+
+- **Encryption** turns plaintext into ciphertext so that only someone with the right key can recover the original. Use it when you need to read the data again later (e.g. HTTPS traffic, encrypted files).
+- **Hashing** turns any input into a fixed-size digest. The same input always gives the same output, and the original cannot feasibly be recovered from it. Use it for password storage, file integrity checks, and digital signatures.
+
+---
+
+## 2. Why do we use cryptographic keys?
+
+**My answer:**
+
+A cryptographic key is the secret (or public/private pair) that controls how an algorithm encrypts, decrypts, signs, or verifies data.
+
+- **Security depends on the key, not the algorithm.** Algorithms such as AES are public and heavily reviewed. If security relied on hiding the algorithm, it would break once the algorithm leaked (Kerckhoffs's principle).
+- **Reusable algorithms.** The same algorithm can protect many users and messages, each with a different key.
+- **Access control.** Only holders of the right key can decrypt or sign. Compromising one key does not compromise others.
+- **Enables key-based features:**
+  - *Confidentiality*: encrypting and decrypting data.
+  - *Authentication*: proving who you are (e.g. private key in SSH or TLS).
+  - *Integrity and non-repudiation*: digital signatures and MACs.
+- **Two kinds of keys:**
+  - *Symmetric*: one shared secret key (AES).
+  - *Asymmetric*: a public/private key pair (RSA, ECC), which allows secure communication without sharing a secret in advance.
+
+---
+
+## 3. Is Base64 encryption? Explain why.
+
+**My answer:**
+
+**No. Base64 is encoding, not encryption.**
+
+- **No key and no secret.** Anyone can decode Base64 instantly using a standard, publicly known algorithm.
+- **Purpose is data representation.** It converts binary data into plain ASCII text (using `A-Z`, `a-z`, `0-9`, `+`, `/`) so it can travel safely through text-only systems such as email (MIME), JSON, URLs, and HTML.
+- **Provides no confidentiality.** It only makes data look scrambled. It also increases size by about 33%.
+
+Example:
+
+```
+Plain text : hello
+Base64     : aGVsbG8=
+```
+
+Decoding `aGVsbG8=` returns `hello` with no key needed.
+
+> **Never use Base64 to protect sensitive data** such as passwords or tokens. Use proper encryption (e.g. AES) for confidentiality and a proper password hash (e.g. bcrypt or Argon2) for passwords.
 
 ### Classify
 | Situation | Which tool? (encryption / hashing / encoding / signature) |

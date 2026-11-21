@@ -4,6 +4,8 @@
 
 ## Learn (20 min)
 
+### Asymmetric encryption (also called public-key cryptography) is a method of encryption that uses a pair of mathematically linked keys: a public key that can be shared openly, and a private key that is kept secret. What one key does, only the other can undo.
+
 ### Public key and private key
 **Asymmetric (public-key) cryptography** uses a **mathematically linked key pair**:
 

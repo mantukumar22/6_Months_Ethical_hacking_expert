@@ -1,5 +1,5 @@
 # Day 3: Asymmetric Encryption
-**Date:** ____ · **Time:** 60 min
+**Date:** 21 · **Time:** 60 min
 **Video:** RSA encryption explained: <paste title/URL>
 
 ## Learn (20 min)

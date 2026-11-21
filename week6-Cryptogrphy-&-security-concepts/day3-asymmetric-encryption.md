@@ -73,21 +73,63 @@ Open both PEM files. Note which header says `PRIVATE KEY` and which says `PUBLIC
 **SSH link (Week 2):** `ssh-keygen -t ed25519` creates the same kind of pair. The `.pub` file is shared, and the private file must stay at `chmod 600`.
 
 ### Questions
-1. Which key encrypts and which decrypts when sending a secret to Alice?
-2. Which key signs and which verifies?
-3. What happens if you change one character of the signed message?
-4. Why is the private key file permission important? (Week 3, `chmod 600`)
+1. Which key encrypts and which decrypts when sending a secret to Alice? Public key encrypts nd private key decrypts.
+2. Which key signs and which verifies? Private Key signs & Pubic key verifies .
+3. What happens if you change one character of the signed message? Verification **fails** with `InvalidSignature`.
+4. Why is the private key file permission important? (Week 3, `chmod 600`) The private key is the **only secret** in public-key crypto. Whoever has a copy can
+decrypt messages sent to you and sign as you, and nothing in the math can tell them
+apart from the real owner.
+
+# Day 3 Notes: Public-Key Cryptography
 
 ## Notes (10 min)
-- Public key in one sentence:
-- Private key in one sentence:
-- Why TLS uses both asymmetric and symmetric crypto:
+
+- **Public key in one sentence:** The public key is the shareable half of a key pair, used to encrypt data *to* the key's owner or to verify signatures made by them.
+- **Private key in one sentence:** The private key is the secret half of the pair, used to decrypt data sent to its owner or to create digital signatures, and it must never be shared.
+- **Why TLS uses both asymmetric and symmetric crypto:** Asymmetric crypto (RSA, ECDHE) solves the key-distribution problem, letting two strangers agree on a secret and authenticate each other over an open network, but it is slow and limited to small data. Symmetric crypto (AES-GCM) is fast and handles bulk data, but both sides need the same key first. TLS uses asymmetric crypto for the handshake to establish a shared session key, then switches to symmetric crypto for the actual traffic.
 
 ## Self-check
-1. Why can the public key be shared openly?
-2. What is a digital signature for?
-3. Why is RSA not used to encrypt large files?
-4. What is forward secrecy?
+
+### 1. Why can the public key be shared openly?
+
+Deriving the private key from the public key is computationally infeasible (for RSA, it would require factoring a huge number). The public key can only *encrypt* and *verify*; it cannot decrypt or sign. Anyone holding it gains no ability to read your messages or forge your signatures. (What does matter is that it is **authentic**, i.e. really belongs to who you think, which is why certificates exist.)
+
+### 2. What is a digital signature for?
+
+A digital signature provides:
+
+- **Authenticity:** proves the message came from the holder of the private key.
+- **Integrity:** any change to the message makes verification fail (e.g. "Pay 100" vs "Pay 900").
+- **Non-repudiation:** the signer can't plausibly deny having signed it.
+
+It does **not** hide the message; it only proves who wrote it and that it is unaltered.
+
+### 3. Why is RSA not used to encrypt large files?
+
+- **Size limit:** RSA can only encrypt data smaller than its key size minus padding overhead (about 190 bytes for RSA-2048 with OAEP/SHA-256).
+- **Speed:** RSA is orders of magnitude slower than AES.
+
+The standard solution is **hybrid encryption**: encrypt the file with a random AES key, then encrypt only that small AES key with RSA.
+
+### 4. What is forward secrecy?
+
+Forward secrecy (also called *perfect forward secrecy*, PFS) means that **compromising a long-term private key later does not expose past sessions.**
+
+- Each session uses a fresh, temporary (**ephemeral**) key pair, typically via ECDHE or DHE key exchange.
+- The session key is derived from these ephemeral values and discarded after the session. The long-term key is used only to *authenticate* the handshake, not to encrypt the session key.
+- **Without PFS** (e.g. old RSA key exchange): an attacker who records traffic today and steals the server's private key next year can decrypt everything recorded.
+- **With PFS:** the stolen key reveals nothing about past sessions, because the ephemeral keys no longer exist.
+
+TLS 1.3 mandates forward secrecy; static RSA key exchange was removed.
+
+## Quick reference
+
+| Concept | Asymmetric (RSA/ECC) | Symmetric (AES) |
+|---|---|---|
+| Keys | Pair (public + private) | One shared key |
+| Speed | Slow | Fast |
+| Data size | Small only | Any size |
+| Role in TLS | Handshake, authentication, key agreement | Bulk data encryption |
 
 ## Mistake I fixed / still confusing
 -

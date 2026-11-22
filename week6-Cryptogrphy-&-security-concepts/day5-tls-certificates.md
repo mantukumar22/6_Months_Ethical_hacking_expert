@@ -1,5 +1,5 @@
 # Day 5: Encoding, Certificates and TLS
-**Date:** ____ · **Time:** 60 min
+**Date:** 22 · **Time:** 60 min
 **Video:** SSL TLS HTTPS explained: <paste title/URL>
 
 ## Learn (20 min)

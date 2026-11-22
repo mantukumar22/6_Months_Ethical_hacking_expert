@@ -1,5 +1,5 @@
 """Week 6, Day 4: Hashing with Python's standard library.
-
+Hashing is the process of running data of any size through a hash function to produce a fixed-length output called a hash (or digest), a kind of digital fingerprint of that data.
 Run:  python3 day4-hashing.py
 Uses test.txt from this folder (created if missing).
 

@@ -119,16 +119,60 @@ openssl s_client -connect example.com:443 -servername example.com </dev/null 2>/
 ### Base64 task
 Encode `admin:password`, decode it back, then explain in one line why this is not security.
 
+# Day 5 Notes: Encoding, Certificates and TLS
+
 ## Notes (10 min)
-- Base64 vs encryption:
-- What a certificate proves:
-- Steps of the TLS handshake, in my own words:
+
+- **Base64 vs encryption:** Base64 is a public, keyless encoding that only changes the *format* of data (binary to text) so it can travel safely; anyone can reverse it. Encryption uses a secret key to make data unreadable to everyone *without* that key. Base64 gives no confidentiality; encryption does.
+- **What a certificate proves:** A certificate (X.509) binds a **public key to an identity** (e.g. `example.com`), and it is **signed by a Certificate Authority**. It proves that the server presenting it is the legitimate owner of that domain's key, so the client isn't talking to an impostor (a man-in-the-middle).
+- **Steps of the TLS handshake, in my own words (TLS 1.3):**
+  1. **ClientHello:** the browser says "I want to talk securely." It sends its supported cipher suites and an ephemeral key share (its half of ECDHE).
+  2. **ServerHello:** the server picks a cipher suite and sends its own ephemeral key share. Both sides can now compute the same shared secret and derive session keys. Everything after this is encrypted.
+  3. **Certificate:** the server sends its certificate (and the chain to a CA).
+  4. **CertificateVerify + Finished:** the server **signs** the handshake with its private key, proving it owns the certificate's key, and sends a Finished message to confirm nothing was tampered with.
+  5. **Client verifies:** the client checks the CA signature, the domain name, the expiry date and revocation status, then sends its own Finished.
+  6. **Secure data:** both sides now exchange traffic encrypted with the fast symmetric session key (AES-GCM or ChaCha20-Poly1305).
 
 ## Self-check
-1. Why can anyone decode Base64?
-2. What is a CA and why do we trust it?
-3. What is the difference between SSL and TLS?
-4. Which keys does TLS use for the key exchange, and which for the bulk data?
+
+### 1. Why can anyone decode Base64?
+
+Because Base64 is a **public, fixed algorithm with no key and no secret**. Decoding is just reversing the mapping of 6-bit groups to characters, and any tool (`base64 -d`, Python, online decoders) does it instantly. It exists for compatibility, not security.
+
+### 2. What is a CA and why do we trust it?
+
+A **Certificate Authority** is an organization (e.g. Let's Encrypt, DigiCert) that verifies a site's identity or domain control and then **signs its certificate** with the CA's private key.
+
+We trust it because of the **chain of trust**:
+
+- Operating systems and browsers ship with a built-in **trust store** of root CA certificates.
+- A server's certificate is signed by an intermediate CA, which is signed by a root CA in the trust store.
+- The client verifies each signature up the chain. If it reaches a trusted root, the certificate is accepted.
+- CAs are audited, must follow strict industry rules, and are publicly logged (Certificate Transparency). A CA that misbehaves gets removed from trust stores.
+
+### 3. What is the difference between SSL and TLS?
+
+**TLS is the successor to SSL.** SSL (Netscape, SSL 2.0/3.0) was found to be insecure (e.g. the POODLE attack), and it was replaced by TLS (1.0, 1.1, 1.2, 1.3). All SSL versions and TLS 1.0/1.1 are deprecated. Only **TLS 1.2 and 1.3** should be used, preferably 1.3. People still say "SSL certificate" out of habit, but the protocol in use today is TLS.
+
+### 4. Which keys does TLS use for the key exchange, and which for the bulk data?
+
+| Purpose | Keys | Type |
+|---|---|---|
+| **Key exchange** | Ephemeral Diffie-Hellman key pairs (ECDHE/DHE), one per session | Asymmetric |
+| **Authentication** | Server's long-term key (RSA or ECDSA) signs the handshake | Asymmetric |
+| **Bulk data** | Session keys derived from the shared secret (AES-GCM or ChaCha20-Poly1305) | Symmetric |
+
+Asymmetric crypto sets up trust and a shared secret; symmetric crypto then encrypts the actual traffic because it is much faster. Because the key exchange uses ephemeral keys, TLS gets **forward secrecy**. (In old TLS 1.2 RSA key exchange, the client encrypted the session key with the server's RSA public key instead, which had no forward secrecy and was removed in TLS 1.3.)
+
+## Quick reference
+
+| Concept | Role |
+|---|---|
+| Base64 | Format conversion, no security |
+| Certificate | Binds a public key to an identity |
+| CA | Trusted signer of certificates |
+| Handshake | Agree on keys, authenticate the server |
+| Session key | Fast symmetric encryption of the data |
 
 ## Mistake I fixed / still confusing
 -

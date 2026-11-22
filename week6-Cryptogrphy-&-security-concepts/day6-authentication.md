@@ -3,7 +3,34 @@
 **Video:** Authentication and authorization: <paste title/URL>
 
 ## Learn (20 min)
+# Authentication vs Authorization
 
+## Authentication
+**Authentication** verifies *who you are*.
+
+- Confirms identity (e.g., logging in with a username and password, SSH key, or token)
+- Happens **first**, before authorization
+- Answers: *"Are you really who you claim to be?"*
+- Examples: entering a password, using an SSH private key, biometric login, MFA codes
+
+## Authorization
+**Authorization** determines *what you're allowed to do*.
+
+- Confirms permissions/access rights after identity is established
+- Happens **after** authentication
+- Answers: *"Are you allowed to access this resource or perform this action?"*
+- Examples: a regular user vs root user having different levels of access, file permissions (read/write/execute), sudo privileges
+
+## Key Difference
+
+| | Authentication | Authorization |
+|---|---|---|
+| **Question answered** | Who are you? | What can you do? |
+| **Order** | Happens first | Happens second |
+| **Example** | Logging in with SSH key | Being allowed to run `sudo` |
+| **Failure result** | Access denied entirely | Access denied to specific resource/action |
+
+**Analogy:** Authentication is showing your ID at the door (proving who you are). Authorization is the bouncer checking the guest list to see which rooms you're allowed into (what you're permitted to do once inside).
 ### Authentication vs authorization
 | | Authentication (AuthN) | Authorization (AuthZ) |
 |---|---|---|

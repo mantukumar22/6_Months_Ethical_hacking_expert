@@ -4,6 +4,12 @@
 
 ## Learn (20 min)
 
+### Encoding
+Encoding converts data from one format to another using a public, reversible scheme so it can be stored, transmitted, or displayed correctly. There is no key and no secret: anyone who knows the scheme can reverse it.
+
+### Base64 Encoding
+Base64 turns binary data into plain text using only 64 safe characters: A-Z, a-z, 0-9, +, /, with = used as padding. This lets binary data travel through systems built for text (email, JSON, URLs, HTTP headers).
+
 ### Base64 encoding vs encryption
 | | Encoding | Encryption |
 |---|---|---|

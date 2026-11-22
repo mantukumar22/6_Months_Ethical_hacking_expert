@@ -122,16 +122,33 @@ def b64url_decode(part):
 5. **Least privilege audit:** `id` on Kali and `whoami /groups` on Windows. Do you run daily as an admin? Could you use a standard account instead?
 
 ## Notes (10 min)
-- Authentication vs authorization, with one example each:
-- Why session IDs must be random:
-- Least privilege in one sentence:
+**Authentication vs authorization, with one example each:**
+Authentication verifies *who you are* — e.g., logging in with a username and password. Authorization determines *what you're allowed to do* — e.g., only an admin account being permitted to delete other users.
 
-## Self-check
-1. Which comes first, authentication or authorization?
-2. Why is a password plus a security question not MFA?
-3. What do `HttpOnly` and `Secure` do?
-4. Why isn't a JWT payload confidential?
-5. Give an example of least privilege on Linux.
+**Why session IDs must be random:**
+If session IDs are predictable (e.g., sequential numbers or based on guessable data like timestamps), an attacker can guess or brute-force another user's valid session ID and hijack their session without ever needing a password. Randomness (ideally from a cryptographically secure generator) makes guessing computationally infeasible.
+
+**Least privilege in one sentence:**
+Every user, process, or system should be granted only the minimum access necessary to perform its function, and nothing more.
+
+## Self-check — Answers
+
+**1. Which comes first, authentication or authorization?**
+Authentication comes first. The system must verify *who you are* before it can decide *what you're allowed to do*.
+
+**2. Why is a password plus a security question not MFA?**
+MFA requires factors from **different categories** — something you know, something you have, something you are. A password and a security question are both "something you know," so it's really just two knowledge factors, not multiple distinct factor types. This makes it weaker than true MFA, since both can potentially be guessed, phished, or found through research/social engineering.
+
+**3. What do `HttpOnly` and `Secure` do?**
+Both are flags set on cookies:
+- **`HttpOnly`** prevents client-side JavaScript from accessing the cookie, which helps protect against theft via Cross-Site Scripting (XSS).
+- **`Secure`** ensures the cookie is only ever sent over HTTPS connections, preventing it from being transmitted in plaintext over unencrypted HTTP.
+
+**4. Why isn't a JWT payload confidential?**
+The header and payload of a JWT are only **Base64url-encoded**, not encrypted. Base64 is trivially reversible by anyone with no key or secret required. Only the signature is cryptographically protected, and that protects **integrity** (tamper-proofing), not **confidentiality**. Anyone who intercepts the token can decode and read the payload.
+
+**5. Give an example of least privilege on Linux.**
+A web server process (e.g. running as the `www-data` user) is given read access to the web root files it needs to serve, but is **not** given root privileges or write access to system files it doesn't need — so if the web application is compromised, the attacker's access is limited to what `www-data` can do, not full system control.
 
 ## Mistake I fixed / still confusing
 -

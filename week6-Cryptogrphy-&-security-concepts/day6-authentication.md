@@ -21,16 +21,7 @@
 - Answers: *"Are you allowed to access this resource or perform this action?"*
 - Examples: a regular user vs root user having different levels of access, file permissions (read/write/execute), sudo privileges
 
-## Key Difference
 
-| | Authentication | Authorization |
-|---|---|---|
-| **Question answered** | Who are you? | What can you do? |
-| **Order** | Happens first | Happens second |
-| **Example** | Logging in with SSH key | Being allowed to run `sudo` |
-| **Failure result** | Access denied entirely | Access denied to specific resource/action |
-
-**Analogy:** Authentication is showing your ID at the door (proving who you are). Authorization is the bouncer checking the guest list to see which rooms you're allowed into (what you're permitted to do once inside).
 ### Authentication vs authorization
 | | Authentication (AuthN) | Authorization (AuthZ) |
 |---|---|---|

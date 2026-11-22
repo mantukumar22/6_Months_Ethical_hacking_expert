@@ -6,8 +6,8 @@ Save outputs (redacted) in `evidence/`.
 
 | # | Task | How | Done |
 |---|---|---|---|
-| 1 | Hash a file using SHA-256 | `python3 day4-hashing.py` (or `sha256sum test.txt`) | [ ] |
-| 2 | Change the file, hash again, compare | Edit `test.txt`, re-run | [ ] |
+| 1 | Hash a file using SHA-256 | `python3 day4-hashing.py` (or `sha256sum test.txt`) | [ Y ] |
+| 2 | Change the file, hash again, compare | Edit `test.txt`, re-run | [ Y ] |
 | 3 | Generate encryption keys | `python3 scripts/day3_keypair.py` and the AES demo | [ ] |
 | 4 | Inspect a website's TLS certificate | `python3 scripts/day5_cert_inspect.py <site>` | [ ] |
 | 5 | Test password hashing concepts | `python3 scripts/day7_password_hashing.py` | [ ] |
@@ -15,9 +15,9 @@ Save outputs (redacted) in `evidence/`.
 ### Lab results
 | Check | Result |
 |---|---|
-| SHA-256 of `test.txt` (original) | |
-| SHA-256 after my change | |
-| Do they match? Why? | |
+| SHA-256 of `test.txt` (original) | 01f3b04fa8d66d9c95855a0564b1ef9eb0bf7ed2195a38f76efb84965208eb23 |
+| SHA-256 after my change | 2b0c70133653567ae1c34e6feb64b048b0820a507509aa48035f712256a2ae1d |
+| Do they match? Why? | No |
 | Key pair generated (type and size) | |
 | Signature verified? After tampering? | |
 | Site inspected, issuer, expiry date | |

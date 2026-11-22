@@ -1,5 +1,5 @@
 # Day 6: Authentication and Security Concepts
-**Date:** ____ · **Time:** 60 min
+**Date:** 22 · **Time:** 60 min
 **Video:** Authentication and authorization: <paste title/URL>
 
 ## Learn (20 min)

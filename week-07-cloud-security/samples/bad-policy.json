@@ -1,0 +1,29 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "EverythingForEveryone",
+      "Effect": "Allow",
+      "Action": "*",
+      "Resource": "*"
+    },
+    {
+      "Sid": "PassAnyRole",
+      "Effect": "Allow",
+      "Action": ["iam:PassRole", "ec2:RunInstances"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllS3",
+      "Effect": "Allow",
+      "Action": "s3:*",
+      "Resource": "*"
+    },
+    {
+      "Sid": "EverythingExceptOneThing",
+      "Effect": "Allow",
+      "NotAction": "iam:DeleteUser",
+      "Resource": "*"
+    }
+  ]
+}

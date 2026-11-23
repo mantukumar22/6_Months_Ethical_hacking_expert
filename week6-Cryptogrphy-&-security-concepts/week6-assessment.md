@@ -18,7 +18,7 @@ Save outputs (redacted) in `evidence/`.
 | SHA-256 of `test.txt` (original) | 01f3b04fa8d66d9c95855a0564b1ef9eb0bf7ed2195a38f76efb84965208eb23 |
 | SHA-256 after my change | 2b0c70133653567ae1c34e6feb64b048b0820a507509aa48035f712256a2ae1d |
 | Do they match? Why? | No |
-| Key pair generated (type and size) | |
+| Key pair generated (type and size) | RSA, 2048 bits |
 | Signature verified? After tampering? | |
 | Site inspected, issuer, expiry date | |
 | TLS version and cipher | |

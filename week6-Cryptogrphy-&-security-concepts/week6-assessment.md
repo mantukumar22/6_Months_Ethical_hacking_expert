@@ -1,5 +1,5 @@
 # Week 6: Practical Lab and Assessment
-**Date:** ____ · **Time:** 60 min
+**Date:** 23 · **Time:** 60 min
 
 ## Practical lab checklist
 Save outputs (redacted) in `evidence/`.

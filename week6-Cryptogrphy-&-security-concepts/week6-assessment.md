@@ -19,7 +19,7 @@ Save outputs (redacted) in `evidence/`.
 | SHA-256 after my change | 2b0c70133653567ae1c34e6feb64b048b0820a507509aa48035f712256a2ae1d |
 | Do they match? Why? | No |
 | Key pair generated (type and size) | RSA, 2048 bits |
-| Signature verified? After tampering? | |
+| Signature verified? After tampering? | Valid on the original message. Invalid after tampering — the signature correctly detected the change. |
 | Site inspected, issuer, expiry date | |
 | TLS version and cipher | |
 | Same password hashed twice with **no salt**: same digest? | |

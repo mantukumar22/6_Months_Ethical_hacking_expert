@@ -20,8 +20,8 @@ Save outputs (redacted) in `evidence/`.
 | Do they match? Why? | No |
 | Key pair generated (type and size) | RSA, 2048 bits |
 | Signature verified? After tampering? | Valid on the original message. Invalid after tampering — the signature correctly detected the change. |
-| Site inspected, issuer, expiry date | |
-| TLS version and cipher | |
+| Site inspected, issuer, expiry date | youtube.com, 3 Nov, 26 Jan 27|
+| TLS version and cipher | TLSv1.3, TLS_AES_256_GCM_SHA384 |
 | Same password hashed twice with **no salt**: same digest? | |
 | Same password with **salt**: same digest? | |
 | MD5 vs SHA-256 vs PBKDF2 timing | |

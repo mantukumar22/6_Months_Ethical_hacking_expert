@@ -8,9 +8,9 @@ Save outputs (redacted) in `evidence/`.
 |---|---|---|---|
 | 1 | Hash a file using SHA-256 | `python3 day4-hashing.py` (or `sha256sum test.txt`) | [ Y ] |
 | 2 | Change the file, hash again, compare | Edit `test.txt`, re-run | [ Y ] |
-| 3 | Generate encryption keys | `python3 scripts/day3_keypair.py` and the AES demo | [ ] |
-| 4 | Inspect a website's TLS certificate | `python3 scripts/day5_cert_inspect.py <site>` | [ ] |
-| 5 | Test password hashing concepts | `python3 scripts/day7_password_hashing.py` | [ ] |
+| 3 | Generate encryption keys | `python3 scripts/day3_keypair.py` and the AES demo | [ Y ] |
+| 4 | Inspect a website's TLS certificate | `python3 scripts/day5_cert_inspect.py <site>` | [ Y ] |
+| 5 | Test password hashing concepts | `python3 scripts/day7_password_hashing.py` | [ Y ] |
 
 ### Lab results
 | Check | Result |
@@ -22,9 +22,9 @@ Save outputs (redacted) in `evidence/`.
 | Signature verified? After tampering? | Valid on the original message. Invalid after tampering — the signature correctly detected the change. |
 | Site inspected, issuer, expiry date | youtube.com, 3 Nov, 26 Jan 27|
 | TLS version and cipher | TLSv1.3, TLS_AES_256_GCM_SHA384 |
-| Same password hashed twice with **no salt**: same digest? | |
-| Same password with **salt**: same digest? | |
-| MD5 vs SHA-256 vs PBKDF2 timing | |
+| Same password hashed twice with **no salt**: same digest? | Yes |
+| Same password with **salt**: same digest? | No |
+| MD5 vs SHA-256 vs PBKDF2 timing | SHA-256 hashes : 0.097s, PBKDF2 : 0.178s |
 
 ### Observations
 - What surprised me:

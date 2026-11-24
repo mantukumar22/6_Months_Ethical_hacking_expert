@@ -1,5 +1,5 @@
 # Day 1: Cloud Computing Fundamentals
-**Date:** ____ · **Time:** 60 min
+**Date:** 24 · **Time:** 60 min
 **Video:** Cloud computing fundamentals: <paste title/URL>
 
 ## Learn (20 min)
@@ -71,43 +71,75 @@ The provider and the customer each secure different parts.
 
 **Key idea:** the customer **always** keeps responsibility for **data and access**. Most cloud breaches come from **customer-side misconfiguration**, not from the provider being hacked.
 
-## Practice (30 min)
-### Your first assignment: answer in your own words
-1. What is the difference between IaaS, PaaS and SaaS?
-   - My answer:
-2. What is the Shared Responsibility Model?
-   - My answer:
-3. If an AWS S3 bucket accidentally allows public access, what security risk does this create?
-   - My answer:
+# Cloud Fundamentals: Assignment 1
 
-### Who is responsible? (Provider / Customer)
+## Answers in my own words
+
+### 1. What is the difference between IaaS, PaaS and SaaS?
+- **IaaS (Infrastructure as a Service):** gives me basic building blocks like virtual machines, storage, and networks. I manage the OS, apps, and data.
+- **PaaS (Platform as a Service):** gives me a ready platform to run my code. I focus on the application and data, not servers or OS patching.
+- **SaaS (Software as a Service):** gives me a complete, ready-to-use software product over the internet. I just use it and manage my data and user access.
+
+### 2. What is the Shared Responsibility Model?
+It is the rule that **security in the cloud is split between the cloud provider and the customer**.
+- **Provider = security *of* the cloud:** physical data centers, hardware, the hypervisor, and the core network.
+- **Customer = security *in* the cloud:** data, user accounts and access, configurations, and (depending on the model) the OS and applications.
+
+The more managed the service is (IaaS → PaaS → SaaS), the more the provider handles. But the customer is always responsible for their data and who can access it.
+
+### 3. If an AWS S3 bucket accidentally allows public access, what security risk does this create?
+Anyone on the internet can find and access the bucket's contents. This can cause:
+- **Data leaks:** exposure of personal, financial, or business data.
+- **Data theft or tampering:** if write access is open, attackers can modify or delete files, or plant ransomware or malware.
+- **Compliance and legal trouble:** violations of rules like GDPR, plus fines.
+- **Reputation and trust damage:** loss of customer confidence.
+- **Unexpected costs:** attackers can generate heavy traffic and storage use.
+
+---
+
+## Who is responsible? (Provider / Customer)
+
 | Scenario | Responsible |
 |---|---|
-| A fire at the data center destroys servers | |
-| An EC2 instance runs an unpatched operating system | |
-| An S3 bucket is set to public by mistake | |
-| An employee's access key is posted on GitHub | |
-| A hypervisor vulnerability in the provider's platform | |
-| A SaaS provider's staff accidentally delete the service | |
-| A user in Microsoft 365 has no MFA | |
+| A fire at the data center destroys servers | **Provider** |
+| An EC2 instance runs an unpatched operating system | **Customer** |
+| An S3 bucket is set to public by mistake | **Customer** |
+| An employee's access key is posted on GitHub | **Customer** |
+| A hypervisor vulnerability in the provider's platform | **Provider** |
+| A SaaS provider's staff accidentally delete the service | **Provider** |
+| A user in Microsoft 365 has no MFA | **Customer** |
 
-### Classify (IaaS / PaaS / SaaS)
+## Classify (IaaS / PaaS / SaaS)
+
 | Service | Model |
 |---|---|
-| AWS EC2 | |
-| Gmail | |
-| Heroku or Google App Engine | |
-| Dropbox | |
-| A virtual machine in Azure | |
+| AWS EC2 | **IaaS** |
+| Gmail | **SaaS** |
+| Heroku or Google App Engine | **PaaS** |
+| Dropbox | **SaaS** |
+| A virtual machine in Azure | **IaaS** |
+
+---
 
 ## Notes (10 min)
-- Cloud computing in one sentence:
-- Which parts of security always stay my job:
+
+- **Cloud computing in one sentence:** Cloud computing is the on-demand delivery of computing resources (servers, storage, databases, software) over the internet, with pay-as-you-go pricing.
+- **Which parts of security always stay my job:**
+  - My **data** (classification, encryption, backups)
+  - **Identity and access** (strong passwords, MFA, least privilege, protecting keys)
+  - **Configuration** (for example, S3 bucket permissions and firewall rules)
+  - **Compliance** with the laws that apply to my data
 
 ## Self-check
-1. Which model gives you the most control, and which the least?
-2. Who patches the OS on an EC2 instance? On a SaaS product?
-3. Why is "the cloud provider got hacked" usually not the cause of cloud breaches?
 
+1. **Which model gives you the most control, and which the least?**
+   **IaaS** gives the most control. **SaaS** gives the least, because the provider manages almost everything.
+
+2. **Who patches the OS on an EC2 instance? On a SaaS product?**
+   - EC2: **the customer** patches the guest OS.
+   - SaaS: **the provider** patches and maintains everything underneath.
+
+3. **Why is "the cloud provider got hacked" usually not the cause of cloud breaches?**
+   Providers invest heavily in securing their infrastructure. Most breaches come from **customer-side mistakes**: misconfigured storage (like public S3 buckets), leaked access keys, weak passwords, missing MFA, and over-permissive access. These are all things the customer controls.
 ## Mistake I fixed / still confusing
 -

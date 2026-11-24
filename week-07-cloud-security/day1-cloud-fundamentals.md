@@ -1,6 +1,6 @@
 # Day 1: Cloud Computing Fundamentals
 **Date:** 24 · **Time:** 60 min
-**Video:** Cloud computing fundamentals: <paste title/URL>
+**Video:** Cloud computing fundamentals: 
 
 ## Learn (20 min)
 

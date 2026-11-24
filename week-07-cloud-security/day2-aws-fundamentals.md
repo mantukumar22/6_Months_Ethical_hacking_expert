@@ -1,5 +1,5 @@
 # Day 2: AWS Fundamentals
-**Date:** ____ · **Time:** 60 min
+**Date:** 24 · **Time:** 60 min
 **Video:** AWS fundamentals for beginners: <paste title/URL>
 
 ## Learn (20 min)

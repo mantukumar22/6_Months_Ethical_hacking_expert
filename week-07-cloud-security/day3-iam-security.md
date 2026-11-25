@@ -130,16 +130,35 @@ In the credential report, look at: `mfa_active`, `access_key_1_last_used_date`, 
 | Policies with `*` actions | |
 
 ## Notes (10 min)
-- User vs role:
-- Why explicit deny wins:
-- Three IAM misconfigurations I can now recognize:
+
+**User vs role:**
+A user is a permanent identity (human or application) with long-term credentials — a password and/or access keys — tied to one specific entity. A role, on the other hand, has no long-term credentials at all; it's an identity that can be *assumed* temporarily by a user, application, or AWS service, which then receives short-lived, auto-expiring credentials. Roles are designed to be assumed and discarded, making them inherently safer for things like EC2 instances, Lambda functions, or cross-account access, where you don't want a static secret sitting around indefinitely.
+
+**Why explicit deny wins:**
+In AWS IAM's policy evaluation logic, an explicit `Deny` in any applicable policy always overrides any `Allow`, no matter how many policies grant access. The default is also deny (if there's no explicit allow, access is denied by default), but once an explicit deny exists, it's absolute and cannot be overridden by another policy — even an `AdministratorAccess` policy. This makes explicit denies a powerful guardrail for things like enforcing MFA requirements, blocking specific dangerous actions, or restricting access by IP/region, since no other policy attached to that identity can accidentally re-open that door.
+
+**Three IAM misconfigurations I can now recognize:**
+1. **Overly broad wildcard permissions** — policies using `"Action": "*"` and/or `"Resource": "*"`, granting far more access than the identity actually needs, violating least privilege.
+2. **`iam:PassRole` combined with `*` resource** — allowing a user to pass *any* role to a service (like EC2 or Lambda), which can let them escalate privileges by attaching a highly privileged role to a resource they control.
+3. **Long-lived access keys instead of roles** — especially keys with no rotation policy, keys embedded in code/commits, or keys attached to human users for programmatic access that should instead use a temporary role (e.g. via STS AssumeRole).
+
+---
 
 ## Self-check
-1. What is the difference between a user, a group and a role?
-2. Why prefer roles over access keys?
-3. What does `AKIA` vs `ASIA` indicate?
-4. Why is `iam:PassRole` on `*` risky?
-5. State the least privilege principle with an example.
 
+**1. What is the difference between a user, a group and a role?**
+A **user** is an individual identity with its own long-term credentials (password and/or access keys), representing a specific person or application. A **group** is just a collection of users — it has no credentials of its own, and exists purely to attach policies to multiple users at once for easier permission management. A **role** is an identity with temporary credentials that can be assumed by users, applications, or AWS services, and unlike a user, it isn't tied to one specific entity — anyone with permission to assume it can use it.
+
+**2. Why prefer roles over access keys?**
+Roles provide temporary, auto-expiring credentials rather than static, long-lived secrets, which drastically reduces the damage if credentials are leaked (e.g., accidentally committed to GitHub) since they become useless after a short time. Roles also eliminate the operational burden of manually rotating and securely storing access keys, and they integrate cleanly with AWS services (EC2, Lambda, ECS) so credentials never need to be hardcoded into an application at all.
+
+**3. What does `AKIA` vs `ASIA` indicate?**
+`AKIA` is the prefix for a **long-term access key** tied to an IAM user — these keys don't expire on their own and remain valid until manually rotated or deleted. `ASIA` is the prefix for a **temporary access key**, issued by AWS STS when a role is assumed — these keys come with a session token and automatically expire after a set duration (minutes to hours). Recognizing the prefix is useful during incident response or auditing, since finding an `AKIA` key hardcoded somewhere it shouldn't be is a bigger red flag than an `ASIA` key, which will expire on its own.
+
+**4. Why is `iam:PassRole` on `*` risky?**
+`iam:PassRole` allows a user to assign an IAM role to an AWS resource (like an EC2 instance or Lambda function) so that resource can act with that role's permissions. If this permission is granted with a wildcard resource (`"Resource": "*"`), the user can pass **any** role in the account — including highly privileged ones like an admin role — to a resource they control. This creates a privilege escalation path: a low-privileged user could launch an EC2 instance, attach an admin role to it, then use that instance to gain full administrative access to the account.
+
+**5. State the least privilege principle with an example.**
+Least privilege means granting every user, role, or service only the minimum permissions necessary to perform its intended function, and nothing more. For example, an application that only needs to read objects from a single S3 bucket should be granted `s3:GetObject` scoped to that specific bucket's ARN, rather than being given broad `s3:*` access across all buckets in the account — limiting the blast radius if that application or its credentials are ever compromised.
 ## Mistake I fixed / still confusing
 -

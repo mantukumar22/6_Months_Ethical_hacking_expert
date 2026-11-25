@@ -119,15 +119,29 @@ aws ec2 describe-regions --query "Regions[].RegionName" --output text
 Redact the account ID when you record output.
 
 ## Notes (10 min)
-- Region vs AZ:
-- Public vs private subnet:
-- Why IMDSv2 matters:
+
+- **Region vs AZ:**
+  A **Region** is a geographic area (for example `ap-south-1`, Mumbai) that contains several **Availability Zones**. An **AZ** is one or more separate data centers inside a region, with its own power and networking, connected to the other AZs by fast links. Most resources (EC2, VPC, buckets) belong to one region, so the region you pick affects latency, cost and where your data legally lives. Spreading across AZs keeps a service running if one data center fails, which protects **Availability**. During an audit, check every region, because attackers often hide resources in regions you never use.
+
+- **Public vs private subnet:**
+  A subnet is **public** when its route table sends internet traffic (`0.0.0.0/0`) to an **Internet Gateway**. Instances in it can also be reached from the internet if they have a public IP and the Security Group allows it. A **private** subnet has no route to the Internet Gateway, so nothing on the internet can start a connection to it. Its instances can still reach out through a **NAT Gateway**. Put web-facing components in public subnets (ideally behind a load balancer) and **databases and internal servers in private subnets**.
+
+- **Why IMDSv2 matters:**
+  Every EC2 instance can query the metadata service at `169.254.169.254`, which includes the **temporary credentials of the instance's IAM role**. With **IMDSv1** a plain GET request is enough, so an attacker who finds an SSRF flaw in a web app can make the server fetch those credentials and use them from anywhere (the pattern behind the 2019 Capital One breach). **IMDSv2** requires a session token obtained through a PUT request and sent in a header on later requests, which blocks most SSRF attacks. Require IMDSv2 on every instance and give the role only the permissions it needs.
 
 ## Self-check
-1. What is an EC2 instance? What is an S3 bucket?
-2. What does a Security Group do, and is it stateful?
-3. What makes a subnet "public"?
-4. Why shouldn't you use the root user for daily work?
+
+1. **What is an EC2 instance? What is an S3 bucket?**
+   An **EC2 instance** is a virtual server you rent from AWS (IaaS). You choose the OS image (AMI), the size and the network settings, and you are responsible for patching it and securing it. An **S3 bucket** is a container in AWS object storage that holds files (objects) under keys. Bucket names are globally unique, and access is controlled by IAM policies, bucket policies, ACLs and Block Public Access.
+
+2. **What does a Security Group do, and is it stateful?**
+   A Security Group is a virtual firewall attached to an instance's network interface, and it controls which traffic is allowed in and out. Its rules are **allow only**, inbound is denied by default, and the source can be an IP range or another Security Group. It is **stateful**: if a connection is allowed in, the reply is allowed out automatically without a separate rule.
+
+3. **What makes a subnet "public"?**
+   Its route table has a route to an **Internet Gateway** for `0.0.0.0/0`. Instances also need a public IP (or Elastic IP) to be reachable. A subnet with no such route is private.
+
+4. **Why shouldn't you use the root user for daily work?**
+   Root has unrestricted power over the whole account, including billing and closing the account, and normal IAM policies can't limit it. If its password or keys are stolen or phished, the attacker gets total control, and actions done as root are hard to trace to a person. Instead, turn on **MFA for root**, don't create root access keys, create an admin identity with MFA (or use IAM Identity Center) for daily use, and use root only for the few tasks that require it.
 
 ## Mistake I fixed / still confusing
 -

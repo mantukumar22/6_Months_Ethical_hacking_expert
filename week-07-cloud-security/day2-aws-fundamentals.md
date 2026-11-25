@@ -96,7 +96,12 @@ Then do these **security basics first**:
 - [ ] Pick one **region** to work in.
 
 ### 2. Console tour (15 min)
-Open **IAM, S3, EC2, VPC, CloudTrail** and **Billing**. Write one sentence on what each shows.
+Open **IAM - Manage acses of all AWS Resources,
+       S3 - A scaleble simple Storage service with 100 buckets, 
+       EC2 - Vertual server in the cloud, 
+       VPC - Isolated Cloud Resources, 
+       CloudTrail - Track user Activity and API Usage** and 
+       **Billing - view and pay bills**. Write one sentence on what each shows.
 
 ### 3. Small build, then delete (optional, mind the costs)
 - Create an **S3 bucket** with Block Public Access **on**, and upload a text file.

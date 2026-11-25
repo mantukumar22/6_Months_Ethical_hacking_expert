@@ -1,5 +1,5 @@
 # Day 3: Cloud Identity and Access Management (IAM)
-**Date:** ____ · **Time:** 60 min
+**Date:** 25 · **Time:** 60 min
 **Video:** AWS IAM explained: <paste title/URL>
 
 ## Learn (20 min)

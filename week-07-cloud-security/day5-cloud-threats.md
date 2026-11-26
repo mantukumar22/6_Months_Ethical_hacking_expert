@@ -74,46 +74,84 @@ Tactics from the MITRE ATT&CK matrix (cloud) map to the same story: initial acce
 
 ## Practice (30 min)
 
-### 1. Map each threat
+## 1. Map each threat
+
 | Misconfiguration | CIA impact | Control that prevents it | Control that detects it |
 |---|---|---|---|
-| Access key in a public GitHub repo | | | |
-| Public S3 bucket | | | |
-| `Action: "*"` policy on a developer role | | | |
-| SSH open to `0.0.0.0/0` | | | |
-| CloudTrail disabled | | | |
-| Unauthenticated API endpoint | | | |
+| Access key in a public GitHub repo | All | Use roles & a Secret Manager instead of hardcoded keys | Watch CloudTrail for unexpected API activity from that key |
+| Public S3 bucket | All | S3 Block Public Access | Access logging / S3 bucket access logs |
+| `Action: "*"` policy on a developer role | All | Apply least privilege — scope the policy to specific required actions/resources | IAM Access Analyzer; CloudTrail for unusual API calls made with that role |
+| SSH open to `0.0.0.0/0` | All | Restrict security group sources to known IPs / use a bastion host or SSM Session Manager | Patching, VPC Flow Logs, GuardDuty alerts for brute-force attempts |
+| CloudTrail disabled | All (mainly Integrity/Accountability) | Enforce CloudTrail via Service Control Policies (SCPs) or AWS Config rules | AWS Config rule detecting CloudTrail is disabled; CloudWatch alarm on `StopLogging` event |
+| Unauthenticated API endpoint | Confidentiality, Integrity | Require authentication/authorization (API keys, IAM auth, Cognito) on all API Gateway routes | API Gateway access logs; WAF logs showing anonymous requests; CloudTrail for API Gateway config changes |
 
-### 2. Hunt for secrets in your own repos (own code only)
-Install a secret scanner such as **gitleaks** and run it on your learning repo, including its history:
-```
+## 2. Hunt for secrets in your own repos
+
+```bash
 gitleaks detect --source . -v
 ```
-(If you find a real secret, treat it as compromised: revoke it, don't just delete the file.)
 
-### 3. Attack path write-up
-Choose one scenario and write 5 to 8 steps, from the attacker's first foothold to impact, then list where **three different controls** would have stopped it.
+If this turns up a real secret: **treat it as compromised immediately** — revoke/rotate the credential in the provider's console, don't just delete it from the file or commit history (old commits may still be cached, forked, or already scraped by a bot).
 
-### 4. Run the sample checkers again
-```
+## 3. Attack path write-up
+
+**Scenario: Leaked AWS access key on GitHub → full account compromise**
+
+1. A developer accidentally commits an AWS access key (`AKIA...`) to a public GitHub repo.
+2. An automated bot scanning GitHub for leaked credentials finds and extracts the key within minutes.
+3. The attacker uses the key with the AWS CLI to run `aws sts get-caller-identity`, confirming the key is valid and checking what account/role it belongs to.
+4. The attacker enumerates permissions attached to the compromised identity (e.g., via `iam:ListAttachedUserPolicies` or by brute-force testing common actions).
+5. The key turns out to have an overly broad `Action: "*"` policy attached, so the attacker pivots to create a new IAM user with admin access as a persistence backdoor.
+6. The attacker spins up EC2 instances in multiple regions for cryptomining, or accesses S3 buckets to exfiltrate sensitive data.
+7. Billing alerts or CloudTrail anomalies finally alert the account owner days later, by which point data has been exfiltrated and resources abused.
+8. **Impact:** financial loss from resource abuse, potential data breach, and loss of trust/compliance violations if customer data was exposed.
+
+**Where three controls would have stopped it:**
+- **gitleaks / pre-commit secret scanning** — would have caught the key before it was ever pushed to GitHub (prevents step 1–2).
+- **Least privilege IAM policy** (no `Action: "*"`) — even if the key leaked, the attacker's actions would have been tightly limited, preventing privilege escalation (stops step 5).
+- **CloudTrail + GuardDuty/CloudWatch alarms** — would have detected the anomalous API activity (new region usage, unusual IAM calls) within minutes instead of days, enabling fast key revocation (stops step 6–7 from escalating further).
+
+## 4. Run the sample checkers again
+
+```bash
 python3 scripts/iam_policy_checker.py samples/bad-policy.json
 python3 scripts/sg_checker.py samples/sg-sample.json
 ```
-Which findings belong to which threat above?
+
+Expected mapping of findings to the table above:
+- `iam_policy_checker.py` findings (e.g., wildcard actions/resources, missing conditions) → maps to **"`Action: "*"` policy on a developer role"** and potentially **"Access key in a public GitHub repo"** if the checked policy belongs to a key-bearing user.
+- `sg_checker.py` findings (e.g., port 22 or 3389 open to `0.0.0.0/0`) → maps directly to **"SSH open to `0.0.0.0/0`"**.
+
+(Run both and compare their actual output against your sample files to confirm exact matches — paste the output if you want help interpreting specific findings.)
 
 ## Ethics and legal
-Finding a public bucket or leaked key on the internet does **not** give you permission to access, download or use it. Without written authorization, stop at identifying that it exists and report it through the owner's disclosure channel. Practise only on your own accounts and training environments (Day 6).
+Finding a public bucket or leaked key on the internet does **not** grant permission to access, download, or use it. Without written authorization, the correct action is to stop at identifying that it exists and report it through the owner's responsible disclosure channel. Practice only on your own accounts and dedicated training environments.
 
 ## Notes (10 min)
-- The three misconfigurations I think are most common, and why:
-- How a leaked key becomes a full compromise:
+
+**The three misconfigurations I think are most common, and why:**
+1. **Overly permissive IAM policies** (`Action: "*"` or `Resource: "*"`) — because it's the path of least resistance during development; it's faster to grant broad access than to scope permissions correctly, and it often never gets tightened later.
+2. **Public S3 buckets** — because default settings have historically been easy to misconfigure, and a single checkbox or policy line can expose an entire bucket without any obvious warning signs during normal use.
+3. **Leaked access keys in source code** — because developers often hardcode credentials for convenience during testing and forget to remove them before committing, especially in fast-moving or less security-mature teams.
+
+**How a leaked key becomes a full compromise:**
+A leaked key starts as just a credential, but its real danger comes from what it's *attached to*. Automated scanners find leaked keys on GitHub within minutes, after which an attacker checks the key's identity and enumerates its permissions. If that key belongs to an overly privileged role or user (e.g., with `iam:PassRole`, `iam:CreateUser`, or broad `*` permissions), the attacker can escalate to full administrative access, create backdoor users, access all data, or spin up expensive resources — turning one small leaked secret into complete account takeover.
+
+---
 
 ## Self-check
-1. Name four cloud misconfigurations.
-2. Why is a leaked access key so dangerous?
-3. What is SSRF and why does it matter for cloud metadata?
-4. What is the first thing to do when a key is leaked?
-5. Which AWS service records API calls?
 
-## Mistake I fixed / still confusing
--
+**1. Name four cloud misconfigurations.**
+Publicly accessible S3 buckets, overly permissive IAM policies (wildcard actions/resources), security groups with SSH/RDP open to `0.0.0.0/0`, and CloudTrail logging disabled.
+
+**2. Why is a leaked access key so dangerous?**
+A leaked access key gives an attacker direct, authenticated API access to AWS as if they were the legitimate user or application — there's no password prompt or MFA step to bypass. The actual damage depends entirely on what permissions that key has, but keys are often over-privileged, so a single leaked key can lead to data theft, resource abuse, or full account takeover within minutes of being discovered by automated scanners.
+
+**3. What is SSRF and why does it matter for cloud metadata?**
+SSRF (Server-Side Request Forgery) is a vulnerability where an attacker tricks a server into making HTTP requests on their behalf, often to internal resources the attacker couldn't normally reach directly. In cloud environments, this matters because instances often have a metadata service (e.g., `169.254.169.254` on AWS) that serves temporary IAM credentials for that instance — if an attacker can get the vulnerable application to request that internal URL, they can steal the instance's role credentials and use them to access AWS resources as that role.
+
+**4. What is the first thing to do when a key is leaked?**
+Immediately **revoke/deactivate the leaked key** in the IAM console (or via CLI), rather than just deleting it from the code or commit history — the key remains valid and usable until it's explicitly revoked, regardless of whether the file still exists.
+
+**5. Which AWS service records API calls?**
+**CloudTrail** records API calls made within an AWS account, logging details like who made the call, what action was performed, when, and from where — making it the primary tool for auditing activity and investigating suspicious behavior.

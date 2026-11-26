@@ -1,5 +1,5 @@
 # Day 5: Cloud Threats and Misconfigurations
-**Date:** ____ · **Time:** 60 min
+**Date:** 26 · **Time:** 60 min
 **Video:** Cloud security misconfigurations: <paste title/URL>
 
 ## Learn (20 min)

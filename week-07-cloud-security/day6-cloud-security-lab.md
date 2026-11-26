@@ -1,5 +1,5 @@
 # Day 6: Practical Cloud Security Lab
-**Date:** ____ · **Time:** 60 min
+**Date:** 26 Nov · **Time:** 60 min
 **Video:** Prowler AWS security audit: <paste title/URL>
 
 ## Goal

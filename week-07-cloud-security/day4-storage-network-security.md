@@ -1,5 +1,5 @@
 # Day 4: Cloud Storage and Network Security
-**Date:** ____ · **Time:** 60 min
+**Date:** 26 · **Time:** 60 min
 **Video:** AWS S3 and VPC security: <paste title/URL>
 
 ## Learn (20 min)
@@ -118,16 +118,34 @@ Fill in the table from memory, then check it.
 For the bad bucket policy in `samples/bad-bucket-policy.json`, write a corrected version (restrict the principal, add `aws:SecureTransport` or a source condition) and rerun the checker on it.
 
 ## Notes (10 min)
-- Public bucket risk in two sentences:
-- Encryption at rest vs in transit:
-- Security Group vs NACL, one-line difference:
+
+**Public bucket risk in two sentences:**
+A publicly accessible S3 bucket means anyone on the internet can potentially read (or even write to) its contents without any authentication, which has led to numerous real-world breaches exposing sensitive data like credentials, customer PII, and backups. This often happens accidentally through misconfigured bucket policies or ACLs rather than intentional design, making it one of the most common and damaging cloud misconfigurations.
+
+**Encryption at rest vs in transit:**
+Encryption at rest protects data while it's stored on disk (e.g., in an S3 bucket, EBS volume, or database), ensuring that if the physical storage or a backup is accessed without authorization, the data remains unreadable. Encryption in transit protects data while it's moving across a network (e.g., HTTPS/TLS between a client and a server), ensuring that anyone intercepting the traffic can't read or tamper with it — both are needed since each protects against a different point of exposure.
+
+**Security Group vs NACL, one-line difference:**
+A Security Group is a stateful firewall attached to individual resources (like an EC2 instance) that only needs rules for one direction since return traffic is automatically allowed, while a Network ACL (NACL) is a stateless firewall attached at the subnet level that requires explicit inbound *and* outbound rules for traffic to flow in both directions.
+
+---
 
 ## Self-check
-1. What does S3 Block Public Access do?
-2. Why is `Principal: "*"` dangerous?
-3. Which is stateless, a Security Group or a NACL?
-4. How do you enforce encryption in transit for S3?
-5. Where should a database live in a VPC?
+
+**1. What does S3 Block Public Access do?**
+It's an account- or bucket-level setting that overrides any individual bucket policies or ACLs that would otherwise grant public access, acting as a safety net to prevent accidental public exposure. Even if someone misconfigures a bucket policy to allow public access, Block Public Access will enforce the restriction anyway unless it's explicitly disabled, making it one of the most effective guardrails against accidental data leaks.
+
+**2. Why is `Principal: "*"` dangerous?**
+`"Principal": "*"` in a resource policy means the policy applies to **anyone** — any AWS account, any anonymous user, with no identity restriction at all. Combined with an `Allow` effect on an action like `s3:GetObject`, this effectively makes the resource public to the entire internet, which is almost never the intent and is one of the most common causes of accidental data exposure.
+
+**3. Which is stateless, a Security Group or a NACL?**
+A **NACL (Network ACL)** is stateless — it evaluates every packet independently in both directions, so you must explicitly allow both inbound and outbound traffic even for a single request/response pair. A Security Group, by contrast, is stateful, automatically allowing return traffic for any connection that was permitted.
+
+**4. How do you enforce encryption in transit for S3?**
+You add a bucket policy that denies any request where `aws:SecureTransport` is `false`, which blocks all non-HTTPS (plain HTTP) requests to the bucket. This ensures that even if someone attempts to access objects over an unencrypted connection, the request is explicitly denied regardless of their other permissions.
+
+**5. Where should a database live in a VPC?**
+A database should live in a **private subnet** with no direct route to an internet gateway, meaning it has no public IP and cannot be reached directly from the internet. Access should only be possible from specific resources within the VPC (like application servers in a separate subnet) via tightly scoped security group rules, often combined with a NAT gateway (for the private subnet's own outbound-only internet access, e.g. for patching) rather than any inbound exposure.
 
 ## Mistake I fixed / still confusing
 -

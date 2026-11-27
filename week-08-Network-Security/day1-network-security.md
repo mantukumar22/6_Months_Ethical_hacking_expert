@@ -130,27 +130,80 @@ Questions:
 - `ip addr` and `ip route` (your interfaces and gateway)
 - `sudo ufw status verbose` (read only. Day 2 covers firewalls)
 
+# Network Security Assignment
+
 ## Today's assignment: answer without searching first
-1. What is network security?
-   - My answer:
-2. What is the difference between TCP and UDP?
-   - My answer:
-3. What is the purpose of a firewall?
-   - My answer:
-4. What is the difference between IDS and IPS?
-   - My answer:
-5. Why is HTTPS more secure than HTTP?
-   - My answer:
+
+### 1. What is network security?
+
+**My answer:** Network security is the policies, tools and practices that protect a network and the data crossing it from unauthorized access, misuse, modification and disruption. It covers devices, connections and the people who use them.
+
+*(Your answer was already good. I only fixed spelling: "Netwoork", "polices", "accses", "conections". It could also name the three goals, **confidentiality, integrity and availability (CIA)**, and give an example such as a firewall blocking unwanted traffic.)*
+
+### 2. What is the difference between TCP and UDP?
+
+**My answer:** Both are transport-layer protocols, but they trade reliability for speed differently. **TCP** is connection-oriented: it does a three-way handshake (SYN, SYN-ACK, ACK), numbers packets, retransmits lost ones and keeps them in order. It is reliable but has more overhead, and it is used for web (HTTP/HTTPS), SSH and email. **UDP** is connectionless: it just sends packets with no handshake, no delivery guarantee and no ordering. It is faster and lighter, and it is used for DNS, video calls, streaming and gaming. For example, a file download uses TCP because every byte must arrive, while a live video call uses UDP because a late packet is worse than a lost one.
+
+### 3. What is the purpose of a firewall?
+
+**My answer:** A firewall controls which network traffic is allowed or blocked, based on rules such as source and destination IP, port and protocol. Its purpose is to reduce the attack surface by allowing only the traffic that is needed and blocking the rest, usually with a default-deny policy for incoming traffic. Firewalls can be network-based (at the perimeter) or host-based (like `ufw` on Linux). For example, a server's firewall may allow only port 443 from anywhere and port 22 from the admin's IP. Next-generation firewalls also inspect applications, but a firewall alone doesn't stop attacks that come through allowed traffic.
+
+### 4. What is the difference between IDS and IPS?
+
+**My answer:** An **IDS** (Intrusion Detection System) **monitors and alerts**: it watches traffic or logs for suspicious patterns and tells you, but doesn't stop anything. An **IPS** (Intrusion Prevention System) sits **inline** in the traffic path and can **block or drop** malicious traffic automatically. IDS is passive and has no impact on traffic flow, while IPS is active, so a false positive can block legitimate traffic. For example, Snort or Suricata can run in either mode: as an IDS it logs a port scan, as an IPS it drops the scanner's packets.
+
+### 5. Why is HTTPS more secure than HTTP?
+
+**My answer:** HTTP sends everything in plain text, so anyone on the path (Wi-Fi, ISP, attacker) can read or modify it. HTTPS is HTTP over **TLS**, which gives three things: **confidentiality** (traffic is encrypted), **integrity** (tampering is detected) and **authentication** (the server's certificate, signed by a trusted CA, proves it is the real site). For example, on public Wi-Fi, a login over HTTP exposes the password to a sniffer, but over HTTPS the attacker sees only encrypted data. HTTPS protects data in transit only. It does not make a website itself safe from phishing or vulnerabilities.
 
 ## Notes (10 min)
-- Network security in one sentence:
-- Two TCP risks and two UDP risks:
-- Three services on my machine that listen on all interfaces:
+
+- **Network security in one sentence:** Network security is the set of policies, tools and practices that protect a network and its data from unauthorized access, misuse, modification and disruption.
+- **Two TCP risks and two UDP risks:**
+  - **TCP:** (1) **SYN flood**, a DoS attack that fills the server's half-open connection table; (2) **session hijacking / TCP reset injection**, where an attacker predicts sequence numbers to take over or kill a connection. (Port scanning with SYN scans is another.)
+  - **UDP:** (1) **IP spoofing and amplification/reflection DDoS** (DNS, NTP, memcached), because there is no handshake to verify the source; (2) **UDP flood**, which overwhelms a host with packets it must process, and also easy-to-miss scanning because closed ports give no reply.
+- **Three services on my machine that listen on all interfaces:** Run this to find your own answer:
+
+  ```bash
+  sudo ss -tulpn | grep -E '0.0.0.0|\[::\]'
+  ```
+
+  Pick three lines and write them down, for example:
+  - `sshd` on `0.0.0.0:22` (if SSH is enabled)
+  - `cupsd` or `avahi-daemon` (printing / mDNS, common on desktops)
+  - `systemd-resolved` is usually on `127.0.0.53` only, so it does *not* count
+
+  On a default Kali VM you may see few or none, because services are off until started. If so, start one (`sudo systemctl start ssh`), re-run the command, and note it. Then stop it again.
 
 ## Self-check
-1. Why is UDP easier to spoof than TCP?
-2. What does `0.0.0.0:22` mean in `ss` output?
-3. Why is network segmentation useful?
+
+### 1. Why is UDP easier to spoof than TCP?
+
+UDP has **no handshake and no connection state**. A sender can put any source IP in a single packet and the receiver processes it, so the attacker never needs to see a reply. To spoof TCP you must complete the three-way handshake, which requires receiving the server's SYN-ACK (sent to the fake address) and guessing the correct sequence numbers. That is why UDP services are favored for **reflection and amplification attacks**.
+
+### 2. What does `0.0.0.0:22` mean in `ss` output?
+
+A service (here SSH on port 22) is **listening on all IPv4 interfaces**, so it accepts connections on every IP the machine has: Wi-Fi, Ethernet, VPN and so on. Compare:
+
+| Output | Meaning |
+|---|---|
+| `0.0.0.0:22` | Reachable from any IPv4 network the host is on |
+| `[::]:22` | Same, for IPv6 |
+| `127.0.0.1:22` | Reachable only from the machine itself |
+| `192.168.1.5:22` | Only on that one interface |
+
+It matters for security because every service listening on all interfaces is **exposed attack surface**. If it doesn't need to be reachable remotely, bind it to `127.0.0.1` or block it with a firewall.
+
+### 3. Why is network segmentation useful?
+
+Segmentation splits a network into separate zones (VLANs, subnets, DMZ) with firewall rules between them.
+
+- **Limits lateral movement:** if one device is compromised, the attacker can't freely reach everything else.
+- **Reduces attack surface and blast radius:** the guest Wi-Fi, IoT devices, servers and workstations are isolated from one another.
+- **Protects sensitive systems:** databases or payment systems can be reachable only from specific hosts.
+- **Easier monitoring and compliance:** traffic between zones is controlled and logged (e.g. PCI DSS).
+
+Example: a smart camera on an IoT VLAN is hacked, but it cannot reach the file server on the server VLAN. In AWS, this is the same idea as separate subnets with Security Groups and NACLs.
 
 ## Mistake I fixed / still confusing
 -

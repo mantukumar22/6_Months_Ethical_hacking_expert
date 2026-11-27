@@ -1,5 +1,5 @@
 # Day 1: Network Security Fundamentals
-**Date:** ____ · **Time:** 60 min
+**Date:** 27 · **Time:** 60 min
 **Video:** Network security basics: <paste title/URL>
 
 **Today's plan:** learn network security basics (20 min) · ports, protocols and threats (15 min) · practise commands in Kali (15 min) · notes and questions (10 min)

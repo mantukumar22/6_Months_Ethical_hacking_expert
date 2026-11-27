@@ -136,9 +136,9 @@ Questions:
 
 ### 1. What is network security?
 
-**My answer:** Network security is the policies, tools and practices that protect a network and the data crossing it from unauthorized access, misuse, modification and disruption. It covers devices, connections and the people who use them.
+**My answer:** Network security is the policies, tools and practices that protect a network and the data crossing it from unauthorized access, misuse, modification and disruption. It covers devices, connections and the people who use them. Its goals are **Confidentiality, Integrity, Availability, Authentication, Authorization / access control, Accountability** 
 
-*(Your answer was already good. I only fixed spelling: "Netwoork", "polices", "accses", "conections". It could also name the three goals, **confidentiality, integrity and availability (CIA)**, and give an example such as a firewall blocking unwanted traffic.)*
+
 
 ### 2. What is the difference between TCP and UDP?
 

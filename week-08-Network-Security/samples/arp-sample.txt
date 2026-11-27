@@ -1,0 +1,5 @@
+? (192.168.1.1) at aa:bb:cc:11:22:33 [ether] on eth0
+? (192.168.1.20) at aa:bb:cc:44:55:66 [ether] on eth0
+? (192.168.1.35) at aa:bb:cc:11:22:33 [ether] on eth0
+? (192.168.1.50) at 11:22:33:44:55:66 [ether] on eth0
+? (192.168.1.60) at (incomplete) on eth0

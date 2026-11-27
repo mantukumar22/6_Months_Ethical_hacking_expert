@@ -1,0 +1,15 @@
+Oct 27 10:15:01 kali sshd[1201]: Failed password for invalid user admin from 203.0.113.5 port 52814 ssh2
+Oct 27 10:15:03 kali sshd[1203]: Failed password for invalid user test from 203.0.113.5 port 52822 ssh2
+Oct 27 10:15:05 kali sshd[1205]: Failed password for root from 203.0.113.5 port 52830 ssh2
+Oct 27 10:15:07 kali sshd[1207]: Failed password for root from 203.0.113.5 port 52838 ssh2
+Oct 27 10:15:09 kali sshd[1209]: Failed password for invalid user oracle from 203.0.113.5 port 52846 ssh2
+Oct 27 10:15:11 kali sshd[1211]: Failed password for invalid user ubuntu from 203.0.113.5 port 52854 ssh2
+Oct 27 10:15:13 kali sshd[1213]: Failed password for kali from 203.0.113.5 port 52862 ssh2
+Oct 27 10:15:15 kali sshd[1215]: Failed password for kali from 203.0.113.5 port 52870 ssh2
+Oct 27 10:15:18 kali sshd[1217]: Accepted password for kali from 203.0.113.5 port 52878 ssh2
+Oct 27 10:20:44 kali sshd[1230]: Failed password for root from 198.51.100.7 port 40112 ssh2
+Oct 27 10:20:47 kali sshd[1232]: Failed password for root from 198.51.100.7 port 40120 ssh2
+Oct 27 10:31:09 kali sshd[1250]: Accepted publickey for kali from 192.168.1.20 port 50500 ssh2: ED25519 SHA256:examplefingerprint
+Oct 27 10:45:30 kali sshd[1260]: Invalid user postgres from 192.0.2.44 port 33210
+Oct 27 10:45:31 kali sshd[1260]: Failed password for invalid user postgres from 192.0.2.44 port 33210 ssh2
+Oct 27 11:02:12 kali sudo:     kali : TTY=pts/0 ; PWD=/home/kali ; USER=root ; COMMAND=/usr/bin/ufw status

@@ -1,0 +1,12 @@
+Netid State  Recv-Q Send-Q  Local Address:Port   Peer Address:Port Process
+udp   UNCONN 0      0           127.0.0.53%lo:53          0.0.0.0:*     users:(("systemd-resolve",pid=612,fd=13))
+udp   UNCONN 0      0                 0.0.0.0:68          0.0.0.0:*     users:(("dhclient",pid=701,fd=7))
+udp   UNCONN 0      0                 0.0.0.0:161         0.0.0.0:*     users:(("snmpd",pid=1002,fd=6))
+tcp   LISTEN 0      128               0.0.0.0:22          0.0.0.0:*     users:(("sshd",pid=842,fd=3))
+tcp   LISTEN 0      5               127.0.0.1:631         0.0.0.0:*     users:(("cupsd",pid=910,fd=7))
+tcp   LISTEN 0      244             127.0.0.1:5432        0.0.0.0:*     users:(("postgres",pid=911,fd=5))
+tcp   LISTEN 0      32                0.0.0.0:21          0.0.0.0:*     users:(("vsftpd",pid=1105,fd=3))
+tcp   LISTEN 0      511                     *:80                *:*     users:(("apache2",pid=1230,fd=4))
+tcp   LISTEN 0      128                  [::]:22             [::]:*     users:(("sshd",pid=842,fd=4))
+tcp   LISTEN 0      4096                    *:8000              *:*     users:(("python3",pid=2210,fd=3))
+tcp   LISTEN 0      70                      *:3306              *:*     users:(("mysqld",pid=1304,fd=22))

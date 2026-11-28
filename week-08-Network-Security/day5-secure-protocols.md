@@ -1,5 +1,5 @@
 # Day 5: Network Security Protocols
-**Date:** ____ · **Time:** 60 min
+**Date:** 28 · **Time:** 60 min
 **Video:** SSH, TLS, VPN explained: <paste title/URL>
 
 ## Learn (20 min)

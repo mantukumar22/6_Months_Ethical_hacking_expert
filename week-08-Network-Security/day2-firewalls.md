@@ -183,8 +183,21 @@ A small office has a web server (HTTPS public), an admin who needs SSH from one 
 In a VM you own, set UFW to default deny incoming, allow SSH and one web port, then check with `sudo ufw status verbose`. Loopback (`127.0.0.1`) traffic is normally allowed by UFW, so to see the firewall's effect, test from **another machine you own** (for example from your host to the VM). Disable it afterwards with `sudo ufw disable`.
 
 ### 4. Explain with an example
-Describe in your own words how a stateful firewall handles a reply packet.
+**Describe in your own words how a stateful firewall handles a reply packet.** : 
+## How a stateful firewall handles a reply packet
 
+A stateful firewall **remembers the connections it has already allowed**. When a computer inside the network starts a connection (for example, my browser sends a request to a website on port 443), the firewall checks its rules, allows the outgoing packet, and writes an entry in a **connection-state table**. That entry records the source IP and port, the destination IP and port, the protocol and the state of the connection.
+
+When the website sends its reply, the firewall does not treat it as brand-new traffic. It compares the incoming packet with the state table and sees that the addresses and ports match an existing connection, with source and destination swapped. Because this is a reply to something I started, the firewall **allows it automatically**, without needing a separate inbound rule. Traffic that does not match any entry (such as an attacker opening a new connection from the internet) is treated as new, checked against the normal rules, and dropped if no rule allows it.
+
+**Example:** My PC (`192.168.1.5:50432`) connects to a web server (`93.184.216.34:443`). The firewall records this. The reply from `93.184.216.34:443` back to `192.168.1.5:50432` matches the entry, so it passes. A packet from `93.184.216.34` to a different port that I never used matches nothing, so it is blocked.
+
+**Why this matters:**
+
+- I only write rules for who may *start* connections, not for every possible reply.
+- Unsolicited inbound packets are blocked even though replies get through.
+- It is what `ESTABLISHED,RELATED` means in iptables, and why Security Groups are called stateful.
+- A **stateless** firewall (like an AWS NACL) has no memory, so you must allow the return traffic with an explicit rule. 
 ## Notes (10 min)
 
 **Firewall in one sentence:**

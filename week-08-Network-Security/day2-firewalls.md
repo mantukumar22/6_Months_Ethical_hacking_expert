@@ -140,13 +140,44 @@ On Windows: `netsh advfirewall show allprofiles`.
 ### 2. Design a ruleset on paper
 A small office has a web server (HTTPS public), an admin who needs SSH from one fixed IP, and a database that only the web server may reach (port 5432). Write the firewall rules (allow rules + default deny) for the web server and the database.
 
+# Firewall ruleset design (on paper)
+
+## Assumptions
+
+- Web server = `WEB_IP` (e.g. 10.0.1.10), database = `DB_IP` (e.g. 10.0.1.20), admin's fixed public IP = `ADMIN_IP` (e.g. 203.0.113.5).
+- The firewalls are **stateful** (like UFW and Security Groups), so replies to allowed connections are automatically allowed.
+- Principle: **default deny incoming**, then allow only what is needed (least privilege).
+
+## Web server
+
 | # | Action | Direction | Protocol | Source | Port | Purpose |
 |---|---|---|---|---|---|---|
-| 1 | | | | | | |
-| 2 | | | | | | |
-| 3 | | | | | | |
-| 4 | | | | | | |
-| 5 | | | | | | |
+| 1 | ALLOW | Inbound | TCP | Any (0.0.0.0/0) | 443 | Public HTTPS |
+| 2 | ALLOW | Inbound | TCP | `ADMIN_IP`/32 | 22 | Admin SSH from one fixed IP only |
+| 3 | ALLOW | Inbound | TCP | Any (0.0.0.0/0) | 80 | *Optional:* HTTP, only to redirect to HTTPS |
+| 4 | ALLOW | Outbound | TCP | `DB_IP`/32 (destination) | 5432 | Web app queries the database |
+| 5 | ALLOW | Outbound | TCP/UDP | DNS resolver (destination) | 53 | Name resolution |
+| 6 | ALLOW | Outbound | TCP | Any (destination) | 80, 443 | OS updates and external APIs (tighten if possible) |
+| 7 | **DENY** | Inbound | All | Any | Any | **Default deny incoming** (everything else) |
+
+## Database server
+
+| # | Action | Direction | Protocol | Source | Port | Purpose |
+|---|---|---|---|---|---|---|
+| 1 | ALLOW | Inbound | TCP | `WEB_IP`/32 | 5432 | Only the web server may reach PostgreSQL |
+| 2 | ALLOW | Inbound | TCP | `ADMIN_IP`/32 | 22 | Admin SSH (or remove and use the web server as a jump host) |
+| 3 | ALLOW | Outbound | TCP/UDP | DNS resolver (destination) | 53 | Name resolution |
+| 4 | ALLOW | Outbound | TCP | Update mirrors (destination) | 80, 443 | OS patches (or use a proxy/mirror) |
+| 5 | **DENY** | Inbound | All | Any | Any | **Default deny incoming** (everything else, including the internet) |
+
+## Why these rules
+
+- **Port 5432 is never open to "Any".** A database exposed to the internet is a classic breach cause. Restricting the source to the web server's IP means an attacker must compromise the web server first.
+- **SSH is limited to one IP** (`/32`), which removes most brute-force and scanning noise.
+- **Default deny** means a forgotten service stays unreachable instead of accidentally exposed.
+- **The database has no inbound rule from the internet** at all.
+- **Return traffic** needs no rule because of stateful tracking.
+
 
 ### 3. Optional: try UFW in a VM
 In a VM you own, set UFW to default deny incoming, allow SSH and one web port, then check with `sudo ufw status verbose`. Loopback (`127.0.0.1`) traffic is normally allowed by UFW, so to see the firewall's effect, test from **another machine you own** (for example from your host to the VM). Disable it afterwards with `sudo ufw disable`.

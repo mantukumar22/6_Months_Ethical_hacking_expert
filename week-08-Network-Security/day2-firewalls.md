@@ -1,5 +1,5 @@
 # Day 2: Firewalls and Network Filtering
-**Date:** ____ · **Time:** 60 min
+**Date:** 28 · **Time:** 60 min
 **Video:** Firewall explained: <paste title/URL>
 
 ## Learn (20 min)
@@ -155,16 +155,34 @@ In a VM you own, set UFW to default deny incoming, allow SSH and one web port, t
 Describe in your own words how a stateful firewall handles a reply packet.
 
 ## Notes (10 min)
-- Firewall in one sentence:
-- Stateful vs stateless, one-line difference:
-- Why "default deny"?
+
+**Firewall in one sentence:**
+A firewall is a security control that monitors and filters network traffic based on a defined set of rules, allowing or blocking connections based on criteria like source/destination IP, port, and protocol.
+
+**Stateful vs stateless, one-line difference:**
+A stateful firewall tracks the state of active connections and automatically allows return traffic, while a stateless firewall evaluates every packet independently with no memory of prior traffic, requiring explicit rules for both directions.
+
+**Why "default deny"?**
+Default deny ensures that any traffic not explicitly permitted is blocked by default, so a missing or forgotten rule results in a safe failure (access denied) rather than accidentally leaving a port open or exposing a service to unintended traffic.
+
+---
 
 ## Self-check
-1. What does a stateful firewall remember that a stateless one doesn't?
-2. What is the difference between inbound and outbound rules?
-3. Why does rule order matter?
-4. What's the risk of enabling a default-deny policy over SSH before allowing SSH?
-5. Is an AWS Security Group stateful or stateless?
+
+**1. What does a stateful firewall remember that a stateless one doesn't?**
+A stateful firewall remembers the **connection state** — it tracks active sessions (e.g., an outbound request that was allowed) and automatically permits the corresponding return traffic without needing a separate explicit rule. A stateless firewall has no memory of previous packets, so it must evaluate every single packet against the rule set independently, requiring matching inbound and outbound rules to allow two-way communication.
+
+**2. What is the difference between inbound and outbound rules?**
+Inbound rules control traffic **coming into** a resource (e.g., allowing SSH connections from a specific IP to reach a server), while outbound rules control traffic **leaving** a resource (e.g., allowing a server to make outbound HTTPS requests to update software). Both directions need to be considered separately, especially in stateless firewalls like NACLs, where allowing inbound traffic doesn't automatically allow the matching outbound response.
+
+**3. Why does rule order matter?**
+In many firewall implementations (like NACLs), rules are evaluated **in order, from lowest number to highest**, and the first matching rule is applied — any rules after a match are ignored. This means a broad "allow" rule placed before a more specific "deny" rule can accidentally override the intended restriction, so rules must be carefully ordered from most specific to least specific (or vice versa, depending on the system's logic) to achieve the intended security outcome.
+
+**4. What's the risk of enabling a default-deny policy over SSH before allowing SSH?**
+If you enable default-deny before adding an explicit rule to allow your own SSH access, you can **immediately lock yourself out** of the server, since the default-deny rule blocks all traffic — including your own legitimate connection — until the allow rule is added. This is a common and costly real-world mistake, especially on remote/cloud servers with no physical console access, potentially requiring a provider's emergency console or a full server rebuild to regain access.
+
+**5. Is an AWS Security Group stateful or stateless?**
+An AWS Security Group is **stateful**. If you allow inbound traffic on a port, the corresponding outbound return traffic is automatically permitted without needing a matching outbound rule, and vice versa for traffic initiated from within the instance.
 
 ## Mistake I fixed / still confusing
 -

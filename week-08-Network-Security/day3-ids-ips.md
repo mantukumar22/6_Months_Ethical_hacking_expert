@@ -130,17 +130,75 @@ For each, say IDS or IPS behavior, and signature or anomaly:
 ### 4. Optional
 Read the official Snort documentation or its rules on the Snort website, and write two rules in plain English (don't deploy them on a network you don't own).
 
+```
+alert tcp $EXTERNAL_NET any -> $HOME_NET 80 (
+    msg:"LAB HTTP request for /admin from external network";
+    flow:to_server,established;
+    http_uri;
+    content:"/admin",nocase;
+    service:http;
+    classtype:web-application-activity;
+    sid:1000002;
+    rev:1;
+)
+```
+
+# IDS / IPS Notes
+
 ## Notes (10 min)
-- IDS vs IPS in two sentences:
-- Why anomaly detection has more false positives:
-- Three things I'd monitor on a small network:
+
+- **IDS vs IPS in two sentences:** An IDS (Intrusion Detection System) passively monitors traffic or logs and raises alerts about suspicious activity, but it does not stop anything. An IPS (Intrusion Prevention System) sits inline in the traffic path and can automatically block or drop malicious traffic, so a false positive can also block legitimate users.
+
+- **Why anomaly detection has more false positives:** Anomaly detection learns a baseline of "normal" behavior and flags anything that deviates, but unusual is not the same as malicious. A new backup job, a software update, a busy sale day or an admin working at night can all look abnormal. Signature detection only fires on known bad patterns, so it is more precise, though it misses new attacks. Baselines are also hard to get right and drift over time, which adds more noise.
+
+- **Three things I'd monitor on a small network:**
+  1. **Authentication logs:** failed and successful logins, especially repeated failures (brute force) and logins at odd hours (SSH, Windows Event IDs 4625/4624).
+  2. **Firewall and network traffic:** blocked connections, port scans, and unusual outbound traffic to unknown IPs (possible malware or data exfiltration).
+  3. **Critical servers and changes:** new user accounts, privilege changes, new listening ports or services, and file integrity changes on the web and database servers. Also DNS queries and system health (CPU spikes can reveal cryptominers).
 
 ## Self-check
-1. Why can't an IDS stop an attack on its own?
-2. What is a false positive vs a false negative, and which is more dangerous?
-3. Which detection method misses zero-day attacks?
-4. Where is an IPS placed in a network compared to an IDS?
-5. Which Windows event ID means a failed logon?
+
+### 1. Why can't an IDS stop an attack on its own?
+
+An IDS is **passive**. It usually receives a copy of the traffic (from a SPAN/mirror port or TAP) and is not in the path of the real traffic, so it cannot drop packets. It can only log and alert, and a person or another system (firewall, SOAR, IPS) must respond. By the time someone reads the alert, the attack may have already succeeded. Some IDS products can send a TCP reset or ask a firewall to block, but that is a limited, slower reaction, not true prevention.
+
+### 2. What is a false positive vs a false negative, and which is more dangerous?
+
+| | Meaning | Example | Impact |
+|---|---|---|---|
+| **False positive** | An alert for harmless activity | Alert on a legitimate admin scan | Wasted time, alert fatigue, blocked users (with an IPS) |
+| **False negative** | A real attack that raised no alert | A stealthy intrusion goes unnoticed | Undetected breach |
+
+**The false negative is more dangerous**, because the attacker gets in and nobody knows. False positives are costly, but too many of them cause **alert fatigue**, which leads analysts to ignore alerts and creates false negatives in practice. Good tuning balances both.
+
+### 3. Which detection method misses zero-day attacks?
+
+**Signature-based detection** (also called rule- or pattern-based). It only matches known patterns, and a zero-day has no signature yet. **Anomaly-based (behavioral) detection** has a better chance of catching zero-days because it notices unusual behavior, at the cost of more false positives.
+
+### 4. Where is an IPS placed in a network compared to an IDS?
+
+| | Placement | Why |
+|---|---|---|
+| **IPS** | **Inline**, directly in the traffic path (e.g. behind the perimeter firewall, between networks) | It must see traffic first so it can drop it |
+| **IDS** | **Out of band**, on a mirror/SPAN port or network TAP, off to the side | It only needs a copy of the traffic and must not disrupt flow |
+
+An inline IPS is a potential **single point of failure** and a latency source, so it is often deployed with fail-open or high-availability options. An IDS failing does not break network connectivity.
+
+### 5. Which Windows event ID means a failed logon?
+
+**Event ID 4625** (Security log): "An account failed to log on." Many 4625 events from one source in a short time suggest brute force or password spraying.
+
+Related IDs worth remembering:
+
+| Event ID | Meaning |
+|---|---|
+| 4624 | Successful logon |
+| 4625 | **Failed logon** |
+| 4634 / 4647 | Logoff |
+| 4720 | User account created |
+| 4672 | Special privileges assigned (admin logon) |
+
+View them in **Event Viewer > Windows Logs > Security**, or with PowerShell: `Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625}`.
 
 ## Mistake I fixed / still confusing
 -

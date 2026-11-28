@@ -107,10 +107,10 @@ The script groups failed SSH logins by source IP, lists the usernames tried, and
 
 | Question | Answer |
 |---|---|
-| Which IP has the most failures? | |
-| Which usernames were tried? | |
-| Did any IP succeed after failing? Why is that serious? | |
-| What control would stop it (give two)? | |
+| Which IP has the most failures? | 203.0.113.5 |
+| Which usernames were tried? | admin, kali, oracle, root, test, ubuntu |
+| Did any IP succeed after failing? Why is that serious? | 203.0.113.5: logged in as 'kali' via password after 8 failures |
+| What control would stop it (give two)? | rate limiting & MFA |
 
 ### 2. Look at your own logs (read only)
 ```

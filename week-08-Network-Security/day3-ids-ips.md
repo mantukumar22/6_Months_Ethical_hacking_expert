@@ -123,9 +123,9 @@ journalctl -p warning -b --no-pager | tail -n 20
 For each, say IDS or IPS behavior, and signature or anomaly:
 | Situation | IDS / IPS | Signature / anomaly |
 |---|---|---|
-| A rule matches a known exploit string and the packet is dropped | | |
-| A tool emails an alert that traffic volume is 10x normal | | |
-| A device flags a known malware domain in DNS and only logs it | | |
+| A rule matches a known exploit string and the packet is dropped | IPS | Signature-based |
+| A tool emails an alert that traffic volume is 10x normal | IDS | Anomaly-based |
+| A device flags a known malware domain in DNS and only logs it | IDS | Signature-based |
 
 ### 4. Optional
 Read the official Snort documentation or its rules on the Snort website, and write two rules in plain English (don't deploy them on a network you don't own).

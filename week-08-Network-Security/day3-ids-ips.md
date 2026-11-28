@@ -1,5 +1,5 @@
 # Day 3: IDS, IPS and Network Monitoring
-**Date:** ____ · **Time:** 60 min
+**Date:** 28 · **Time:** 60 min
 **Video:** IDS vs IPS: <paste title/URL>
 
 ## Learn (20 min)
